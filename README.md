@@ -15,7 +15,7 @@
 - 언어 : Typescript
 - 서버 : node, socketio
 - 클라이언트 : socketio, Typescript
-
+- 데이터베이스 : mongoDB
 
 
 ## LICENSE
