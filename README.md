@@ -4,8 +4,7 @@
 
 > TETRIS game named "넌 블럭 킹!" made in javascript
 
->   이 프로젝트는 **기술 스택을 늘리기 위해**, 한 번도 다뤄본 적 없는 스택만을 사용하는 프로젝트입니다.
->   Server, Client, Front, Backend 가릴 것 없이 모두 새 기술을 도입하여, **생태계 자체에 대한 이해도**를 높이는 데 주력합니다.
+>   이 프로젝트는 Server, Client, Front, Backend 가릴 것 없이 모두 새 기술을 도입하여, **생태계 자체에 대한 이해도**를 높이는 데 주력합니다.
 
 ---
 
@@ -14,8 +13,8 @@
 ## 스택
 
 - 언어 : Typescript
-- 서버 : node, nest
-- 클라이언트 : react
+- 서버 : node, socketio
+- 클라이언트 : socketio, Typescript
 
 
 
