@@ -2,7 +2,7 @@
 
 
 
-> TETRIS game named "넌 블럭 킹!" made in javascript
+> TETRIS game named "넌 블록 킹!" made in javascript
 
 >   이 프로젝트는 Server, Client, Front, Backend 가릴 것 없이 모두 새 기술을 도입하여, **생태계 자체에 대한 이해도**를 높이는 데 주력합니다.
 
