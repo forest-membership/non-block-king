@@ -34,4 +34,10 @@ module.exports = {
       template: path.resolve(__dirname, "./src/index.html"),
     }),
   ],
+  devServer: {
+    host: "127.0.0.1",
+    port: 8000,
+    hot: true,
+    contentBase: path.resolve(__dirname, "dist"),
+  },
 };
