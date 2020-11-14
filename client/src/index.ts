@@ -1,4 +1,5 @@
 import hello from "./components/demo";
+import "./styles/index";
 
 hello();
 const $app = document.querySelector("#app");
