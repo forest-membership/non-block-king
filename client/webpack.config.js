@@ -38,6 +38,9 @@ module.exports = (env, options) => {
     ],
   };
   config.resolve = {
+    alias: {
+      '@': path.resolve(__dirname, 'src'),
+    },
     extensions: ['.ts', '.js', '.scss'],
   };
   config.output = {
