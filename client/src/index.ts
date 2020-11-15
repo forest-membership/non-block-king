@@ -1,6 +1,4 @@
-import hello from '@/components/demo';
-import '@/scss/index';
+import App from '@/App';
+import '@/scss/main';
 
-hello();
-const $app = document.querySelector('#app');
-$app?.append((document.createElement('div').innerHTML = 'hello!'));
+new App();
