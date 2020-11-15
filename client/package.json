@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.11.6",
     "@types/jest": "^26.0.15",
     "@types/node": "^14.14.7",
     "@typescript-eslint/eslint-plugin": "^4.7.0",
