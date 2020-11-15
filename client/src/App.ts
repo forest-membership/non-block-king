@@ -1,12 +1,14 @@
-import { $ } from '@/utils';
+// import { $ } from '@/utils';
 import VState from '@/@types/vstate';
+import VProps from '@/@types/vprops';
 import VComponent from '@/@types/vcomponent';
 
 class App implements VComponent {
   state: VState;
 
-  constructor() {
+  constructor({ $parent }: VProps) {
     this.state = {
+      $parent: $parent,
       $target: null,
     };
     this.initTargetDOM();
@@ -14,7 +16,9 @@ class App implements VComponent {
   }
 
   initTargetDOM(): void {
-    this.state.$target = $('#app') as HTMLElement;
+    this.state.$target = document.createElement('div');
+    this.state.$target.id = 'app';
+    this.state.$parent.append(this.state.$target);
   }
 
   render(): void {
