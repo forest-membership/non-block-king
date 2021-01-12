@@ -1,9 +1,10 @@
 import React from 'react';
+import Modal from './components/organisms/Modal';
 
 const App = (): JSX.Element => {
   return (
     <div className="App">
-      <span>HELLO WORLD!</span>
+      <Modal />
     </div>
   );
 };
