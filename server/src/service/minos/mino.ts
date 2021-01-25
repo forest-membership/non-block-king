@@ -15,9 +15,15 @@ class Block {
 
 abstract class Mino {
     blocks: Array<Block>;
+    standardBlock: Block | null;
 
     constructor(color: string, xPos: number, yPos: number) {
         this.blocks = new Array(4).map((el) => new Block(color, xPos, yPos));
+        this.standardBlock = null;
+    }
+
+    setStandard(block: Block): void {
+        this.standardBlock = block;
     }
 
     moveRight(): void {
