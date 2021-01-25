@@ -2,11 +2,11 @@ const MAP_WIDTH = 10;
 const MAP_HEIGHT = 20;
 
 class Block {
-    color: string;
+    color?: string;
     xPos: number;
     yPos: number;
 
-    constructor(color: string, xPos: number, yPos: number) {
+    constructor(color?: string, xPos?: number, yPos?: number) {
         this.color = color;
         this.xPos = xPos || 0;
         this.yPos = yPos || 0;
@@ -17,7 +17,7 @@ abstract class Mino {
     blocks: Array<Block>;
     standardBlock: Block | null;
 
-    constructor(color: string, xPos: number, yPos: number) {
+    constructor(color?: string, xPos?: number, yPos?: number) {
         this.blocks = new Array(4).map((el) => new Block(color, xPos, yPos));
         this.standardBlock = this.blocks[0];
     }
