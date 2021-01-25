@@ -19,7 +19,7 @@ abstract class Mino {
 
     constructor(color: string, xPos: number, yPos: number) {
         this.blocks = new Array(4).map((el) => new Block(color, xPos, yPos));
-        this.standardBlock = null;
+        this.standardBlock = this.blocks[0];
     }
 
     setStandard(block: Block): void {
