@@ -1,5 +1,8 @@
+import Positon from "../../types/position";
+
 const MAP_WIDTH = 10;
 const MAP_HEIGHT = 20;
+const TETRA = 4;
 
 class Block {
     color?: string;
@@ -11,14 +14,19 @@ class Block {
         this.xPos = xPos || 0;
         this.yPos = yPos || 0;
     }
+
+    setPosition({ xPos, yPos }: Positon) {
+        this.xPos = xPos;
+        this.yPos = yPos;
+    }
 }
 
 abstract class Mino {
     blocks: Array<Block>;
-    standardBlock: Block | null;
+    standardBlock: Block;
 
-    constructor(color?: string, xPos?: number, yPos?: number) {
-        this.blocks = new Array(4).map((el) => new Block(color, xPos, yPos));
+    constructor(color?: string) {
+        this.blocks = new Array(TETRA).map((el) => new Block(color));
         this.standardBlock = this.blocks[0];
     }
 
