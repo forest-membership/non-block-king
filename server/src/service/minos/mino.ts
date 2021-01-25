@@ -1,4 +1,5 @@
 import Positon from "../../types/position";
+import Direction from "../../types/direction";
 
 const MAP_WIDTH = 10;
 const MAP_HEIGHT = 20;
@@ -24,10 +25,12 @@ class Block {
 abstract class Mino {
     blocks: Array<Block>;
     standardBlock: Block;
+    direction: number;
 
     constructor(color?: string) {
         this.blocks = new Array(TETRA).map((el) => new Block(color));
         this.standardBlock = this.blocks[0];
+        this.direction = Direction.up;
     }
 
     setStandard(block: Block): void {
