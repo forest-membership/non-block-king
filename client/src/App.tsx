@@ -1,12 +1,8 @@
 import React from 'react';
-import Modal from './components/organisms/Modal';
+import MainView from './pages/MainView';
 
-const App = (): JSX.Element => {
-  return (
-    <div className="App">
-      <Modal />
-    </div>
-  );
+const App: React.FC = () => {
+  return <MainView />;
 };
 
 export default App;
