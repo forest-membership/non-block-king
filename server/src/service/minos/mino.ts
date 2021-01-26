@@ -1,8 +1,5 @@
 import Positon from "../../types/position";
-import Direction from "../../types/direction";
 
-const MAP_WIDTH = 10;
-const MAP_HEIGHT = 20;
 const TETRA = 4;
 
 class Block {
@@ -23,17 +20,12 @@ class Block {
 }
 
 class Mino {
-    blocks: Array<Block>;
     blockArea: Array<Array<number>>;
     standardBlock: Block;
-    direction: number;
 
     constructor(color?: string) {
-        this.blocks = new Array(TETRA).fill(0).map((el) => new Block(color));
-        // this.blockArea = new Array(TETRA).fill([]).map((el) => new Array<number | undefined>(TETRA).fill(0));
         this.blockArea = new Array(TETRA).fill(0).map((el) => [0, 0, 0, 0]);
-        this.standardBlock = this.blocks[0];
-        this.direction = Direction.up;
+        this.standardBlock = new Block(color);
     }
 
     setStandard(block: Block): void {
@@ -41,27 +33,15 @@ class Mino {
     }
 
     moveRight(): void {
-        this.blocks.forEach((block) => {
-            if (block.xPos < MAP_WIDTH) {
-                block.xPos++;
-            }
-        });
+        this.standardBlock.xPos++;
     }
 
     moveLeft(): void {
-        this.blocks.forEach((block) => {
-            if (block.xPos < 0) {
-                block.xPos--;
-            }
-        });
+        this.standardBlock.xPos--;
     }
 
     moveDown(): void {
-        this.blocks.forEach((block) => {
-            if (block.xPos < MAP_HEIGHT) {
-                block.yPos++;
-            }
-        });
+        this.standardBlock.yPos++;
     }
 
     rotateLeft(): void {
@@ -84,7 +64,7 @@ class Mino {
         this.blockArea = newArea;
     }
 
-    print() {
+    print(): void {
         for (let i = 0; i < TETRA; i++) {
             console.log(this.blockArea[i]);
         }
