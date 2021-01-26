@@ -22,13 +22,16 @@ class Block {
     }
 }
 
-abstract class Mino {
+class Mino {
     blocks: Array<Block>;
+    blockArea: Array<Array<number>>;
     standardBlock: Block;
     direction: number;
 
     constructor(color?: string) {
-        this.blocks = new Array(TETRA).map((el) => new Block(color));
+        this.blocks = new Array(TETRA).fill(0).map((el) => new Block(color));
+        // this.blockArea = new Array(TETRA).fill([]).map((el) => new Array<number | undefined>(TETRA).fill(0));
+        this.blockArea = new Array(TETRA).fill(0).map((el) => [0, 0, 0, 0]);
         this.standardBlock = this.blocks[0];
         this.direction = Direction.up;
     }
@@ -61,8 +64,31 @@ abstract class Mino {
         });
     }
 
-    rotateLeft(): void {}
-    rotateRight(): void {}
+    rotateLeft(): void {
+        let newArea: Array<Array<number>> = [[], [], [], []];
+        for (let i = 0; i < TETRA; i++) {
+            for (let j = 0; j < TETRA; j++) {
+                newArea[TETRA - j - 1][i] = this.blockArea[i][j];
+            }
+        }
+        this.blockArea = newArea;
+    }
+
+    rotateRight(): void {
+        let newArea: Array<Array<number>> = [[], [], [], []];
+        for (let i = 0; i < TETRA; i++) {
+            for (let j = 0; j < TETRA; j++) {
+                newArea[j][TETRA - i - 1] = this.blockArea[i][j];
+            }
+        }
+        this.blockArea = newArea;
+    }
+
+    print() {
+        for (let i = 0; i < TETRA; i++) {
+            console.log(this.blockArea[i]);
+        }
+    }
 }
 
 export default Mino;
