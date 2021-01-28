@@ -1,4 +1,5 @@
 import React from 'react';
+import * as S from './style';
 
 interface IButtonProps {
   text: string;
@@ -6,7 +7,7 @@ interface IButtonProps {
 }
 
 function Button({ text, onClick }: IButtonProps): JSX.Element {
-  return <button onClick={onClick}>{text}</button>;
+  return <S.Button onClick={onClick}>{text}</S.Button>;
 }
 
 export default Button;
