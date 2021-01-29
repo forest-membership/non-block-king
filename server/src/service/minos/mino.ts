@@ -20,31 +20,31 @@ class Block {
 }
 
 class Mino {
-    blockArea: Array<Array<number>>;
-    standardBlock: Block;
+    protected blockArea: Array<Array<number>>;
+    protected pivotReferenceBlock: Block;
 
     constructor(color?: string) {
         this.blockArea = new Array(TETRA).fill(0).map((el) => [0, 0, 0, 0]);
-        this.standardBlock = new Block(color);
+        this.pivotReferenceBlock = new Block(color);
     }
 
-    setStandard(block: Block): void {
-        this.standardBlock = block;
+    setpivotReference(block: Block) {
+        this.pivotReferenceBlock = block;
     }
 
-    moveRight(): void {
-        this.standardBlock.xPos++;
+    moveRight() {
+        this.pivotReferenceBlock.xPos++;
     }
 
-    moveLeft(): void {
-        this.standardBlock.xPos--;
+    moveLeft() {
+        this.pivotReferenceBlock.xPos--;
     }
 
-    moveDown(): void {
-        this.standardBlock.yPos++;
+    moveDown() {
+        this.pivotReferenceBlock.yPos++;
     }
 
-    rotateLeft(): void {
+    rotateLeft() {
         let newArea: Array<Array<number>> = [[], [], [], []];
         for (let i = 0; i < TETRA; i++) {
             for (let j = 0; j < TETRA; j++) {
@@ -54,7 +54,7 @@ class Mino {
         this.blockArea = newArea;
     }
 
-    rotateRight(): void {
+    rotateRight() {
         let newArea: Array<Array<number>> = [[], [], [], []];
         for (let i = 0; i < TETRA; i++) {
             for (let j = 0; j < TETRA; j++) {
@@ -64,7 +64,7 @@ class Mino {
         this.blockArea = newArea;
     }
 
-    print(): void {
+    print() {
         for (let i = 0; i < TETRA; i++) {
             console.log(this.blockArea[i]);
         }

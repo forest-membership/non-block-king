@@ -4,8 +4,8 @@ import Positon from "../../types/position";
 class LMino extends Mino {
     constructor(color: string = "white", initValue: Positon = { xPos: 0, yPos: 0 }) {
         super(color);
-        this.standardBlock.xPos = initValue.xPos;
-        this.standardBlock.yPos = initValue.yPos;
+        this.pivotReferenceBlock.xPos = initValue.xPos;
+        this.pivotReferenceBlock.yPos = initValue.yPos;
         this.init();
     }
 

@@ -6,12 +6,12 @@ import SMino from "./S.mino";
 import TMino from "./T.mino";
 import ZMino from "./Z.mino";
 
-const minos = [IMino, JMino, LMino, OMino, SMino, TMino, ZMino];
+const shuffleFunction = () => {
+    const minos = [IMino, JMino, LMino, OMino, SMino, TMino, ZMino];
+    const shuffle = () => minos.sort(() => Math.random() - 0.5);
+    return shuffle;
+};
 
-minos.forEach((Mino) => {
-    new Mino().print();
+const getNextMinos = shuffleFunction();
 
-    console.log();
-});
-
-export default minos;
+export default getNextMinos;
