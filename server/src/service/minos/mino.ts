@@ -1,4 +1,4 @@
-import Positon from "../../types/position";
+import Position from "@/types/position";
 
 const TETRA = 4;
 
@@ -13,7 +13,7 @@ class Block {
         this.yPos = yPos || 0;
     }
 
-    setPosition({ xPos, yPos }: Positon) {
+    setPosition({ xPos, yPos }: Position) {
         this.xPos = xPos;
         this.yPos = yPos;
     }

@@ -1,4 +1,4 @@
-import Mino from "./mino";
+import Mino from "@/service/minos/mino";
 import Position from "@/types/position";
 
 class IMino extends Mino {

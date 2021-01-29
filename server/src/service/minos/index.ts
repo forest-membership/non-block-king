@@ -1,10 +1,10 @@
-import IMino from "./I.mino";
-import JMino from "./J.mino";
-import LMino from "./L.mino";
-import OMino from "./O.mino";
-import SMino from "./S.mino";
-import TMino from "./T.mino";
-import ZMino from "./Z.mino";
+import IMino from "@/service/minos/I.mino";
+import JMino from "@/service/minos/J.mino";
+import LMino from "@/service/minos/L.mino";
+import OMino from "@/service/minos/O.mino";
+import SMino from "@/service/minos/S.mino";
+import TMino from "@/service/minos/T.mino";
+import ZMino from "@/service/minos/Z.mino";
 
 const shuffleFunction = () => {
     const minos = [IMino, JMino, LMino, OMino, SMino, TMino, ZMino];

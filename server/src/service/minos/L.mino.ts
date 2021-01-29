@@ -1,8 +1,8 @@
-import Mino from "./mino";
-import Positon from "../../types/position";
+import Mino from "@/service/minos/mino";
+import Position from "@/types/position";
 
 class LMino extends Mino {
-    constructor(color: string = "white", initValue: Positon = { xPos: 0, yPos: 0 }) {
+    constructor(color: string = "white", initValue: Position = { xPos: 0, yPos: 0 }) {
         super(color);
         this.pivotReferenceBlock.xPos = initValue.xPos;
         this.pivotReferenceBlock.yPos = initValue.yPos;

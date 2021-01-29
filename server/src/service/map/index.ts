@@ -1,13 +1,6 @@
 const MAP_HEIGHT = 20;
 const MAP_WEIGHT = 10;
 
-// const printOneLine = (arr: Array<number>) => {
-//     for (let i = 0; i < MAP_WEIGHT; i++) {
-//         process.stdout.write(arr[i] + " ");
-//     }
-//     console.log();
-// };
-
 class TetrisGame {
     gameMap: Array<Array<number>>;
     gamePoint: number;
