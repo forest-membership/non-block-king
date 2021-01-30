@@ -2,6 +2,10 @@
 import express from "express";
 import http from "http";
 // import { API_PORT, HOST } from "./config";
+
+import test from "./service/minos";
+test;
+
 const API_PORT = 3000;
 const HOST = "127.0.0.1";
 
