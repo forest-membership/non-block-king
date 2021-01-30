@@ -1,11 +1,13 @@
 import React from 'react';
-import Modal from './components/organisms/Modal';
+import MainView from './pages/MainView';
+import { basicTheme } from './styles/theme';
+import { ThemeProvider } from 'styled-components';
 
-const App = (): JSX.Element => {
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <Modal />
-    </div>
+    <ThemeProvider theme={basicTheme}>
+      <MainView />
+    </ThemeProvider>
   );
 };
 
