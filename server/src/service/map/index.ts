@@ -2,7 +2,7 @@ const MAP_HEIGHT = 20;
 const MAP_WEIGHT = 10;
 
 class TetrisGame {
-    gameMap: Array<Array<number>>;
+    gameMap: number[][];
     gamePoint: number;
 
     constructor() {
@@ -30,22 +30,16 @@ class TetrisGame {
                 i--;
             }
         }
-        return this;
     }
 
     print() {
-        console.log("@@@@@@@@@@@@@@@@@@@");
         for (let i = 0; i < MAP_HEIGHT; i++) {
             for (let j = 0; j < MAP_WEIGHT; j++) {
                 process.stdout.write(String(this.gameMap[i][j]) + " ");
             }
             console.log();
         }
-        console.log("@@@@@@@@@@@@@@@@@@@");
-        return this;
     }
 }
-
-new TetrisGame().checkLine().print();
 
 export default TetrisGame;
