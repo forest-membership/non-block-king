@@ -20,7 +20,7 @@ class Block {
 }
 
 class Mino {
-    protected blockArea: Array<Array<number>>;
+    protected blockArea: number[][];
     protected pivotReferenceBlock: Block;
 
     constructor(color?: string) {
@@ -45,23 +45,25 @@ class Mino {
     }
 
     rotateLeft() {
-        let newArea: Array<Array<number>> = [[], [], [], []];
+        let newArea: number[][] = [[], [], [], []];
         for (let i = 0; i < TETRA; i++) {
             for (let j = 0; j < TETRA; j++) {
                 newArea[TETRA - j - 1][i] = this.blockArea[i][j];
             }
         }
         this.blockArea = newArea;
+        return this;
     }
 
     rotateRight() {
-        let newArea: Array<Array<number>> = [[], [], [], []];
+        let newArea: number[][] = [[], [], [], []];
         for (let i = 0; i < TETRA; i++) {
             for (let j = 0; j < TETRA; j++) {
                 newArea[j][TETRA - i - 1] = this.blockArea[i][j];
             }
         }
         this.blockArea = newArea;
+        return this;
     }
 
     print() {
