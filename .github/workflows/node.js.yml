@@ -26,5 +26,5 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: cd server
-    - run: npm ci
+    - run: npm install
     - run: npm test
