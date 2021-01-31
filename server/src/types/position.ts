@@ -1,6 +1,6 @@
-interface Positon {
+interface Position {
     xPos: number;
     yPos: number;
 }
 
-export default Positon;
+export default Position;
