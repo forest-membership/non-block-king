@@ -8,7 +8,7 @@ module.exports = (env, options) => {
   const config = {};
   const isDevelopment = options.mode === 'development';
 
-  config.entry = path.resolve(__dirname, './src/index.ts');
+  config.entry = path.resolve(__dirname, './src/index.tsx');
   config.devtool = 'inline-source-map';
   config.module = {
     rules: [
@@ -41,7 +41,7 @@ module.exports = (env, options) => {
     alias: {
       '@': path.resolve(__dirname, 'src'),
     },
-    extensions: ['.ts', '.js', '.scss'],
+    extensions: ['.ts', '.tsx', '.js', 'json', '.scss'],
   };
   config.output = {
     filename: 'bundle.[hash].js',
