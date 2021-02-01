@@ -1,5 +1,6 @@
 const MAP_HEIGHT = 20;
 const MAP_WEIGHT = 10;
+const FULL = 1;
 
 class TetrisGame {
     gameMap: number[][];
@@ -18,8 +19,11 @@ class TetrisGame {
         this.gameMap[MAP_HEIGHT - 1] = new Array(MAP_WEIGHT).fill(0);
     }
 
-    isLineFull(line: Array<number>) {
-        return line.reduce((acc, cur) => acc + cur) === MAP_WEIGHT;
+    isLineFull(line: Array<number>): boolean {
+        for (let i = 0; i < line.length; i++) {
+            if (line[i] !== FULL) return false;
+        }
+        return true;
     }
 
     checkLine(cur: number = 0) {
