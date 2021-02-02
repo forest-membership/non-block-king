@@ -4,5 +4,5 @@ export const Button = styled.button`
   padding: 10px;
   border: none;
   border-radius: 12px;
-  background-color: ${({ theme }) => theme.colors.grey};
+  background-color: ${({ theme }) => theme.colors.gray};
 `;
