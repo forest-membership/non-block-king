@@ -156,6 +156,4 @@ class TetrisGame {
     }
 }
 
-const curMap = new TetrisGame();
-
 export default TetrisGame;
