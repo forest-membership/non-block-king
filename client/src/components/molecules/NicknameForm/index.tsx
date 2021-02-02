@@ -13,8 +13,12 @@ function NicknameForm({ onSubmit }: INicknameForm): JSX.Element {
     <S.Form onSubmit={onSubmit}>
       <Input type="text" placeholder="닉네임을 입력하세요" />
       <S.ButtonWrapper>
-        <Button>닉네임 재생성</Button>
-        <Button>접속</Button>
+        <Button variant="contained" color="black">
+          닉네임 재생성
+        </Button>
+        <Button variant="outlined" color="black">
+          접속
+        </Button>
       </S.ButtonWrapper>
     </S.Form>
   );
