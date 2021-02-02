@@ -1,3 +1,7 @@
+import getNextMinos from "@/service/minos";
+import IMino from "@/service/minos/I.mino";
+import STATUS from "@/service/status";
+
 const MAP_HEIGHT = 20;
 const MAP_WEIGHT = 10;
 const FULL = 1;
@@ -5,10 +9,20 @@ const FULL = 1;
 class TetrisGame {
     gameMap: number[][];
     gamePoint: number;
+    nextMinos: typeof IMino[];
 
     constructor() {
-        this.gameMap = new Array(MAP_HEIGHT).fill(0).map(() => new Array(MAP_WEIGHT).fill(0));
+        this.gameMap = new Array(MAP_HEIGHT).fill(0).map(() => new Array(MAP_WEIGHT).fill(STATUS.VOID));
         this.gamePoint = 0;
+        this.nextMinos = getNextMinos();
+    }
+
+    getNextMino() {
+        if (!this.nextMinos.length) {
+            console.log("모든 블럭 사용, 새로 7개 생성.");
+            this.nextMinos = getNextMinos();
+        }
+        return this.nextMinos.pop();
     }
 
     pullNextLine(cur: number) {
@@ -16,7 +30,7 @@ class TetrisGame {
             this.gameMap[i] = this.gameMap[i + 1];
         }
 
-        this.gameMap[MAP_HEIGHT - 1] = new Array(MAP_WEIGHT).fill(0);
+        this.gameMap[MAP_HEIGHT - 1] = new Array(MAP_WEIGHT).fill(STATUS.VOID);
     }
 
     isLineFull(line: Array<number>): boolean {

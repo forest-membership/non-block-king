@@ -6,9 +6,10 @@ import SMino from "@/service/minos/S.mino";
 import TMino from "@/service/minos/T.mino";
 import ZMino from "@/service/minos/Z.mino";
 
+const initMinos = () => [IMino, JMino, LMino, OMino, SMino, TMino, ZMino];
+
 const shuffleFunction = () => {
-    const minos = [IMino, JMino, LMino, OMino, SMino, TMino, ZMino];
-    const shuffle = () => minos.sort(() => Math.random() - 0.5);
+    const shuffle = () => initMinos().sort(() => Math.random() - 0.5);
     return shuffle;
 };
 
