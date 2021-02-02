@@ -16,6 +16,14 @@ class Mino {
         this.pivotReferenceBlock = block;
     }
 
+    public get area(): number[][] {
+        return this.blockArea;
+    }
+
+    public get pivot(): Block {
+        return this.pivotReferenceBlock;
+    }
+
     moveRight() {
         this.pivotReferenceBlock.xPos++;
     }
