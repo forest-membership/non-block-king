@@ -1,4 +1,5 @@
 import Position from "@/types/position";
+import STATUS from "@/service/status";
 
 const TETRA = 4;
 
@@ -24,7 +25,7 @@ class Mino {
     protected pivotReferenceBlock: Block;
 
     constructor(color?: string) {
-        this.blockArea = new Array(TETRA).fill(0).map((el) => [0, 0, 0, 0]);
+        this.blockArea = new Array(TETRA).fill(0).map((el) => [STATUS.VOID, STATUS.VOID, STATUS.VOID, STATUS.VOID]);
         this.pivotReferenceBlock = new Block(color);
     }
 

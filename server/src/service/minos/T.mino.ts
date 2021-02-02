@@ -1,5 +1,6 @@
 import Mino from "@/service/minos/mino";
 import Position from "@/types/position";
+import STATUS from "@/service/status";
 
 class TMino extends Mino {
     constructor(color: string = "white", initValue: Position = { xPos: 0, yPos: 0 }) {
@@ -10,10 +11,10 @@ class TMino extends Mino {
     }
 
     init() {
-        this.blockArea[0][0] = 1;
-        this.blockArea[0][1] = 1;
-        this.blockArea[0][2] = 1;
-        this.blockArea[1][1] = 1;
+        this.blockArea[0][0] = STATUS.MINO;
+        this.blockArea[0][1] = STATUS.MINO;
+        this.blockArea[0][2] = STATUS.MINO;
+        this.blockArea[1][1] = STATUS.MINO;
     }
 }
 
