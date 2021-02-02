@@ -4,7 +4,6 @@ import STATUS from "@/service/status";
 
 const MAP_HEIGHT = 20;
 const MAP_WEIGHT = 10;
-const FULL = 1;
 
 class TetrisGame {
     gameMap: number[][];
@@ -19,7 +18,6 @@ class TetrisGame {
 
     getNextMino() {
         if (!this.nextMinos.length) {
-            console.log("모든 블럭 사용, 새로 7개 생성.");
             this.nextMinos = getNextMinos();
         }
         return this.nextMinos.pop();
@@ -35,7 +33,7 @@ class TetrisGame {
 
     isLineFull(line: Array<number>): boolean {
         for (let i = 0; i < line.length; i++) {
-            if (line[i] !== FULL) return false;
+            if (line[i] !== STATUS.FULL) return false;
         }
         return true;
     }
