@@ -7,6 +7,4 @@ const name = noun.filter((word, index) => noun.indexOf(word) === index);
 const selectAdj = () => adj[Math.floor(Math.random() * adj.length)];
 const selectName = () => name[Math.floor(Math.random() * name.length)];
 
-const generateNickname = () => selectAdj() + " " + selectName();
-
-export default generateNickname;
+export default () => selectAdj() + " " + selectName();
