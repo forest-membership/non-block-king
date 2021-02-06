@@ -42,7 +42,7 @@ function getBorder({ theme, variant, color }: IStyledButtonProps) {
 export const Button = styled.button<IStyledButtonProps>`
   padding: 10px;
   border: ${(props) => getBorder(props)};
-  border-radius: 12px;
+  border-radius: ${(props) => props.theme.radiuses.button};
   background-color: ${(props) => getBackgroundColor(props)};
   color: ${(props) => getFontColor(props)};
 `;
