@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import * as S from './style';
 
 interface IInputProps {
   /** input 요소의 종류 */
@@ -15,7 +16,7 @@ function Input({ type, placeholder }: IInputProps): JSX.Element {
   };
 
   return (
-    <input
+    <S.Input
       type={type}
       value={value}
       placeholder={placeholder}
