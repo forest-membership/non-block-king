@@ -2,6 +2,8 @@ import React from 'react';
 import * as S from './style';
 
 export interface IButtonProps {
+  /** 버튼 고유 아이디 */
+  id?: string;
   /** 버튼 종류 */
   variant: 'contained' | 'outlined';
   /** 버튼 색상 */
@@ -13,13 +15,14 @@ export interface IButtonProps {
 }
 
 function Button({
+  id,
   variant,
   color,
   children,
   onClick,
 }: IButtonProps): JSX.Element {
   return (
-    <S.Button variant={variant} color={color} onClick={onClick}>
+    <S.Button id={id} variant={variant} color={color} onClick={onClick}>
       {children}
     </S.Button>
   );
