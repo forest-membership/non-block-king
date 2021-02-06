@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import * as S from './style';
 
-interface IInputProps {
+export interface IInputProps {
   /** input 요소의 종류 */
-  type: string;
+  type: 'text' | 'tel' | 'email' | 'password';
   /** input 요소 기본 안내문구 */
   placeholder?: string;
 }
@@ -24,5 +24,9 @@ function Input({ type, placeholder }: IInputProps): JSX.Element {
     />
   );
 }
+
+Input.defaultProps = {
+  type: 'text',
+};
 
 export default Input;
