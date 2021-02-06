@@ -3,12 +3,12 @@ import Input from '../../atoms/Input';
 import Button from '../../atoms/Button';
 import * as S from './style';
 
-interface INicknameForm {
+export interface INicknameFormProps {
   /** 폼 제출 시 실핼할 콜백 함수 */
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
 }
 
-function NicknameForm({ onSubmit }: INicknameForm): JSX.Element {
+function NicknameForm({ onSubmit }: INicknameFormProps): JSX.Element {
   return (
     <S.Form onSubmit={onSubmit}>
       <Input type="text" placeholder="닉네임을 입력하세요" />
