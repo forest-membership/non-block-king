@@ -11,3 +11,13 @@ export default {
 } as Meta;
 
 export const Default: Story<IButtonProps> = () => <Button>버튼</Button>;
+
+export const Contained: Story<IButtonProps> = () => (
+  <Button variant="contained" color="green">
+    버튼
+  </Button>
+);
+
+export const Outlined: Story<IButtonProps> = () => (
+  <Button variant="outlined">버튼</Button>
+);
