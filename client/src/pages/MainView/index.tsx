@@ -27,13 +27,24 @@ function MainView(): JSX.Element {
     console.log(mode);
   };
 
+  const handleGenerateNickname = (e: React.MouseEvent<HTMLButtonElement>) => {
+    /** TODO: 닉네임 생성 API 연동 */
+    e.stopPropagation();
+    console.log('닉네임 생성하기');
+  };
+
   if (error) return <div>에러발생</div>; // TODO: 에러 사유 토스트 띄우기(ex.닉네임 중복)
 
   return (
     <MainViewTemplate
       isLoading={isLoading}
       nickname={nickname}
-      nicknameForm={<NicknameForm onSubmit={handleSignIn} />}
+      nicknameForm={
+        <NicknameForm
+          onSubmit={handleSignIn}
+          onGenerateNickname={handleGenerateNickname}
+        />
+      }
       modeSelectBox={<ModeSelectBox onSelect={handleModeSelect} />}
     />
   );
