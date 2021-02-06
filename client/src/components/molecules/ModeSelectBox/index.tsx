@@ -2,11 +2,11 @@ import React from 'react';
 import Button from '../../atoms/Button';
 import * as S from './style';
 
-interface IModeSelectBox {
+export interface IModeSelectBoxProps {
   onSelect: (mode: string) => void;
 }
 
-function ModeSelectBox({ onSelect }: IModeSelectBox): JSX.Element {
+function ModeSelectBox({ onSelect }: IModeSelectBoxProps): JSX.Element {
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const mode = (e.target as HTMLButtonElement).id;
     onSelect(mode);
