@@ -3,6 +3,7 @@ import Button from '../../atoms/Button';
 import * as S from './style';
 
 export interface IModeSelectBoxProps {
+  /** 모드 선택시 호출되는 콜백 함수 */
   onSelect: (mode: string) => void;
 }
 
