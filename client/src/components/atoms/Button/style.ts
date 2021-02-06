@@ -20,7 +20,7 @@ function getBackgroundColor({ theme, variant, color }: IStyledButtonProps) {
 function getFontColor({ theme, variant, color }: IStyledButtonProps) {
   switch (variant) {
     case 'contained':
-      return theme.colors.black;
+      return theme.colors.white;
     case 'outlined':
       return theme.colors[color];
     default:
