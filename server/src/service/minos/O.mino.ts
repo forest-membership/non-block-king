@@ -1,19 +1,20 @@
-import Mino from "./mino";
-import Positon from "../../types/position";
+import Mino from "@/service/minos/mino";
+import Position from "@/types/position";
+import STATUS from "@/service/status";
 
 class OMino extends Mino {
-    constructor(color: string = "white", initValue: Positon = { xPos: 0, yPos: 0 }) {
+    constructor(color: string = "white", initValue: Position = { xPos: 0, yPos: 0 }) {
         super(color);
-        this.standardBlock.xPos = initValue.xPos;
-        this.standardBlock.yPos = initValue.yPos;
+        this.pivotReferenceBlock.xPos = initValue.xPos;
+        this.pivotReferenceBlock.yPos = initValue.yPos;
         this.init();
     }
 
     init() {
-        this.blockArea[0][1] = 1;
-        this.blockArea[1][1] = 1;
-        this.blockArea[0][0] = 1;
-        this.blockArea[1][0] = 1;
+        this.blockArea[0][1] = STATUS.MINO;
+        this.blockArea[1][1] = STATUS.MINO;
+        this.blockArea[0][0] = STATUS.MINO;
+        this.blockArea[1][0] = STATUS.MINO;
     }
 }
 
