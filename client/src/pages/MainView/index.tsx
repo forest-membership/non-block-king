@@ -1,6 +1,7 @@
 import React from 'react';
 import MainViewTemplate from './template';
 import NicknameForm from '../../components/molecules/NicknameForm';
+import ModeSelectBox from '../../components/molecules/ModeSelectBox';
 import useAsync from '../../hooks/useAsync';
 
 // TODO: 로그인 api로 대체 필요
@@ -14,20 +15,38 @@ function requestAsync() {
 
 function MainView(): JSX.Element {
   const [response, requestSignIn] = useAsync(requestAsync);
-  const { isLoading, data, error } = response;
+  const { isLoading, data: nickname, error } = response;
 
   const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await requestSignIn();
   };
 
-  console.log(data); // FIXME: 디버깅용 로그
+  const handleModeSelect = (mode: string) => {
+    /** TODO: 선택된 모드로 라우팅 */
+    console.log(mode);
+  };
 
-  if (isLoading) return <div>로딩중</div>;
-  if (error) return <div>에러발생</div>;
+  const handleGenerateNickname = (e: React.MouseEvent<HTMLButtonElement>) => {
+    /** TODO: 닉네임 생성 API 연동 */
+    e.stopPropagation();
+    console.log('닉네임 생성하기');
+  };
+
+  if (error) return <div>에러발생</div>; // TODO: 에러 사유 토스트 띄우기(ex.닉네임 중복)
 
   return (
-    <MainViewTemplate nicknameForm={<NicknameForm onSubmit={handleSignIn} />} />
+    <MainViewTemplate
+      isLoading={isLoading}
+      nickname={nickname}
+      nicknameForm={
+        <NicknameForm
+          onSubmit={handleSignIn}
+          onGenerateNickname={handleGenerateNickname}
+        />
+      }
+      modeSelectBox={<ModeSelectBox onSelect={handleModeSelect} />}
+    />
   );
 }
 

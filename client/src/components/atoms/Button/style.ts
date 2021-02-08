@@ -20,7 +20,7 @@ function getBackgroundColor({ theme, variant, color }: IStyledButtonProps) {
 function getFontColor({ theme, variant, color }: IStyledButtonProps) {
   switch (variant) {
     case 'contained':
-      return theme.colors.black;
+      return theme.colors.white;
     case 'outlined':
       return theme.colors[color];
     default:
@@ -42,7 +42,7 @@ function getBorder({ theme, variant, color }: IStyledButtonProps) {
 export const Button = styled.button<IStyledButtonProps>`
   padding: 10px;
   border: ${(props) => getBorder(props)};
-  border-radius: 12px;
+  border-radius: ${(props) => props.theme.radiuses.button};
   background-color: ${(props) => getBackgroundColor(props)};
   color: ${(props) => getFontColor(props)};
 `;

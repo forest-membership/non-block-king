@@ -5,4 +5,4 @@ export const Template = styled.main`
   justify-content: center;
 `;
 
-export const FormWrapper = styled.div``;
+export const ContentWrapper = styled.div``;
