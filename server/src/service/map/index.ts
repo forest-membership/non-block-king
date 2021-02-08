@@ -12,7 +12,7 @@ const MAP_HEIGHT = 20 + MINO_HEIGHT;
 
 class TetrisGame {
     private gameMap: number[][];
-    private gamePoint: number;
+    public gamePoint: number;
     private curMinoSet: Mino[];
     private curMino?: Mino;
 
