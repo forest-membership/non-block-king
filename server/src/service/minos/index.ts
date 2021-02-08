@@ -8,11 +8,11 @@ import ZMino from "@/service/minos/Z.mino";
 
 const initMinos = () => [new IMino(), new JMino(), new LMino(), new OMino(), new SMino(), new TMino(), new ZMino()];
 
-const shuffleFunction = () => {
+const shuffleMinos = () => {
     const shuffle = () => initMinos().sort(() => Math.random() - 0.5);
     return shuffle;
 };
 
-const getNextMinos = shuffleFunction();
+const getNextMinos = shuffleMinos();
 
 export default getNextMinos;
