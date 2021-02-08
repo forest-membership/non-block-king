@@ -2,20 +2,22 @@ import getNextMinos from "@/service/minos";
 import STATUS from "@/service/status";
 import Block from "@/service/minos/block";
 import Mino from "@/service/minos/mino";
+import { makeTwoDimensionArray } from "@/utils";
 
 const MINO_HEIGHT = 4;
 const MINO_WIDTH = 4;
+const TETRA = 4;
 const MAP_WIDTH = 10;
 const MAP_HEIGHT = 20 + MINO_HEIGHT;
 
 class TetrisGame {
-    gameMap: number[][];
-    gamePoint: number;
-    curMinoSet: Mino[];
-    curMino?: Mino;
+    private gameMap: number[][];
+    private gamePoint: number;
+    private curMinoSet: Mino[];
+    private curMino?: Mino;
 
     constructor() {
-        this.gameMap = new Array(MAP_HEIGHT).fill(0).map(() => new Array(MAP_WIDTH).fill(STATUS.VOID));
+        this.gameMap = makeTwoDimensionArray(MAP_HEIGHT, MAP_WIDTH, STATUS.VOID);
         this.gamePoint = 0;
         this.curMinoSet = getNextMinos();
         this.curMino = this.getNextMino();
@@ -27,9 +29,6 @@ class TetrisGame {
         }
 
         const nextMino = this.curMinoSet.pop();
-        if (!nextMino) {
-            return undefined;
-        }
         return nextMino;
     }
 
@@ -42,7 +41,6 @@ class TetrisGame {
         const curMinoArea = this.curMino.area;
         const pivotY = curMinoPivot.yPos + 1;
         const pivotX = curMinoPivot.xPos;
-
         for (let i = pivotY; i < pivotY + MINO_HEIGHT; i++) {
             for (let j = pivotX; j < pivotX + MINO_WIDTH; j++) {
                 let curBlockOfMap;
@@ -69,7 +67,7 @@ class TetrisGame {
                 if (this.gameMap[i][j] === STATUS.MINO) {
                     this.gameMap[i][j] = STATUS.VOID;
                     count++;
-                    if (count === 4) {
+                    if (count === TETRA) {
                         return true;
                     }
                 }
@@ -132,7 +130,7 @@ class TetrisGame {
         return true;
     }
 
-    checkLine(cur: number = 0) {
+    checkIfLineIsFullAndGiveScore(cur: number = 0) {
         for (let i = cur; i < MAP_HEIGHT; i++) {
             if (this.isLineFull(this.gameMap[i])) {
                 this.pullNextLine(i);
