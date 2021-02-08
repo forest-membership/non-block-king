@@ -1,14 +1,34 @@
 import React from 'react';
 import * as S from './style';
 
-interface INicknameFormProps {
+interface IMainViewTemplateProps {
+  isLoading: boolean;
+  nickname: string;
   nicknameForm: React.ReactNode;
+  modeSelectBox: React.ReactNode;
 }
 
-function MainViewTemplate({ nicknameForm }: INicknameFormProps): JSX.Element {
+function MainViewTemplate({
+  isLoading,
+  nickname,
+  nicknameForm,
+  modeSelectBox,
+}: IMainViewTemplateProps): JSX.Element {
+  const renderContent = () => {
+    const targetContent = isLoading ? (
+      <div>로딩중</div>
+    ) : nickname ? (
+      modeSelectBox
+    ) : (
+      nicknameForm
+    );
+
+    return targetContent;
+  };
+
   return (
     <S.Template>
-      <S.FormWrapper>{nicknameForm}</S.FormWrapper>
+      <S.ContentWrapper>{renderContent()}</S.ContentWrapper>
     </S.Template>
   );
 }
