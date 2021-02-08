@@ -7,6 +7,7 @@ import { makeTwoDimensionArray } from "@/utils";
 const MINO_HEIGHT = 4;
 const MINO_WIDTH = 4;
 const TETRA = 4;
+
 const MAP_WIDTH = 10;
 const MAP_HEIGHT = 20 + MINO_HEIGHT;
 
@@ -41,6 +42,7 @@ class TetrisGame {
         const curMinoArea = this.curMino.area;
         const pivotY = curMinoPivot.yPos + 1;
         const pivotX = curMinoPivot.xPos;
+
         for (let i = pivotY; i < pivotY + MINO_HEIGHT; i++) {
             for (let j = pivotX; j < pivotX + MINO_WIDTH; j++) {
                 let curBlockOfMap;
