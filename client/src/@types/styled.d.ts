@@ -9,5 +9,9 @@ declare module 'styled-components' {
     sizes: {
       [index: string]: number;
     };
+
+    radiuses: {
+      [index: string]: string;
+    };
   }
 }

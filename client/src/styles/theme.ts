@@ -5,11 +5,17 @@ export const basicTheme: DefaultTheme = {
     white: '#ffffff',
     black: '#202020',
     gray: '#808080',
+    lightgray: '#efefef',
     green: '#8ce99a',
   },
 
   sizes: {
     small: 10,
     large: 15,
+  },
+
+  radiuses: {
+    input: '10px',
+    button: '12px',
   },
 };
