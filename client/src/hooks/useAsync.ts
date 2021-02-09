@@ -12,7 +12,7 @@ interface IAction {
   error?: any;
 }
 
-function reducer(state: IState, action: IAction) {
+function reducer(_: IState, action: IAction) {
   switch (action.type) {
     case 'LOADING':
       return {
@@ -52,7 +52,8 @@ function useAsync(
     dispatch({ type: 'LOADING' });
 
     try {
-      const data = await callback();
+      const { data } = await callback();
+
       dispatch({ type: 'SUCCESS', data });
     } catch (err) {
       dispatch({ type: 'FAILURE', error: err });
