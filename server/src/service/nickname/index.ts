@@ -1,10 +1,27 @@
-import adjective from "@/service/nickname/adjective";
-import noun from "@/service/nickname/noun";
+import 'reflect-metadata';
+import { Service } from 'typedi';
+import adjectives from '@/service/nickname/adjective';
+import nouns from '@/service/nickname/noun';
+import { removeDuplicateFromArray, createRandomNumber } from '@/utils';
 
-const adj = adjective.filter((word, index) => adjective.indexOf(word) === index);
-const name = noun.filter((word, index) => noun.indexOf(word) === index);
+@Service()
+class NicknameService {
+  adjs: string[];
+  names: string[];
 
-const selectAdj = () => adj[Math.floor(Math.random() * adj.length)];
-const selectName = () => name[Math.floor(Math.random() * name.length)];
+  public constructor() {
+    this.adjs = removeDuplicateFromArray<string>(adjectives);
+    this.names = removeDuplicateFromArray<string>(nouns);
+  }
 
-export default () => selectAdj() + " " + selectName();
+  public createNickname() {
+    const nickname = [this.adjs, this.names].reduce(
+      (acc, words) => acc + words[createRandomNumber(words.length)],
+      ''
+    );
+
+    return nickname;
+  }
+}
+
+export default NicknameService;
