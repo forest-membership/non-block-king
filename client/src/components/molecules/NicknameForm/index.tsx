@@ -1,5 +1,4 @@
 import React from 'react';
-import Input from '../../atoms/Input';
 import Button from '../../atoms/Button';
 import * as S from './style';
 
@@ -19,19 +18,20 @@ function NicknameForm({
 }: INicknameFormProps): JSX.Element {
   return (
     <S.Form onSubmit={onSubmit}>
-      <Input
-        type="text"
-        defaultValue={nickname}
-        placeholder="닉네임을 입력하세요"
-      />
-      <S.ButtonWrapper>
-        <Button variant="contained" color="black" onClick={onGenerateNickname}>
+      <S.InputWrapper>
+        <S.NicknameInput
+          type="text"
+          defaultValue={nickname}
+          placeholder="닉네임을 입력하세요"
+        />
+        <Button variant="outlined" color="green" onClick={onGenerateNickname}>
           닉네임 재생성
         </Button>
-        <Button type="submit" variant="outlined" color="black">
-          접속
-        </Button>
-      </S.ButtonWrapper>
+      </S.InputWrapper>
+
+      <S.SigninButton type="submit" variant="outlined" color="green">
+        접속하기
+      </S.SigninButton>
     </S.Form>
   );
 }

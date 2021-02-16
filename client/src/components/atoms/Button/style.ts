@@ -11,7 +11,7 @@ function getBackgroundColor({ theme, variant, color }: IStyledButtonProps) {
     case 'contained':
       return theme.colors[color];
     case 'outlined':
-      return theme.colors.white;
+      return 'transparent';
     default:
       return '';
   }
