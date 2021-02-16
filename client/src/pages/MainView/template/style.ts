@@ -4,7 +4,7 @@ export const Template = styled.main`
   display: flex;
   justify-content: center;
   height: 100%;
-  background-color: #151715;
+  background-color: #212121;
 `;
 
 export const ContentWrapper = styled.div`
