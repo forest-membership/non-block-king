@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import MainViewTemplate from './template';
 import NicknameForm from '../../components/molecules/NicknameForm';
 import ModeSelectBox from '../../components/molecules/ModeSelectBox';
 import useAsync from '../../hooks/useAsync';
+import AuthAPI from '../../apis/auth';
 
 // TODO: 로그인 api로 대체 필요
 function requestAsync() {
@@ -14,33 +15,40 @@ function requestAsync() {
 }
 
 function MainView(): JSX.Element {
-  const [response, requestSignIn] = useAsync(requestAsync);
-  const { isLoading, data: nickname, error } = response;
+  const [signinResponse, requestSignIn] = useAsync(requestAsync);
+  const [nicknameResponse, requestNickname] = useAsync(AuthAPI.getNickname);
+
+  const { isLoading, data: token, error: signinError } = signinResponse;
+  const { data: issuedNickname, error: nicknameError } = nicknameResponse;
 
   const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
+    /** TODO: issuedNickname 활용해서 로그인 API 요청 */
     e.preventDefault();
     await requestSignIn();
   };
 
-  const handleModeSelect = (mode: string) => {
+  const handleModeSelect = useCallback((mode: string) => {
     /** TODO: 선택된 모드로 라우팅 */
     console.log(mode);
-  };
+  }, []);
 
-  const handleGenerateNickname = (e: React.MouseEvent<HTMLButtonElement>) => {
-    /** TODO: 닉네임 생성 API 연동 */
-    e.stopPropagation();
-    console.log('닉네임 생성하기');
-  };
+  const handleGenerateNickname = useCallback(
+    async (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation();
+      await requestNickname();
+    },
+    []
+  );
 
-  if (error) return <div>에러발생</div>; // TODO: 에러 사유 토스트 띄우기(ex.닉네임 중복)
+  if (signinError || nicknameError) return <div>에러발생</div>; // TODO: 에러 사유 토스트 띄우기(ex.닉네임 중복)
 
   return (
     <MainViewTemplate
       isLoading={isLoading}
-      nickname={nickname}
+      token={token}
       nicknameForm={
         <NicknameForm
+          nickname={issuedNickname?.nickname}
           onSubmit={handleSignIn}
           onGenerateNickname={handleGenerateNickname}
         />

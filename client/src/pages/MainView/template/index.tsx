@@ -3,21 +3,21 @@ import * as S from './style';
 
 interface IMainViewTemplateProps {
   isLoading: boolean;
-  nickname: string;
+  token: string;
   nicknameForm: React.ReactNode;
   modeSelectBox: React.ReactNode;
 }
 
 function MainViewTemplate({
   isLoading,
-  nickname,
+  token,
   nicknameForm,
   modeSelectBox,
 }: IMainViewTemplateProps): JSX.Element {
   const renderContent = () => {
     const targetContent = isLoading ? (
       <div>로딩중</div>
-    ) : nickname ? (
+    ) : token ? (
       modeSelectBox
     ) : (
       nicknameForm
