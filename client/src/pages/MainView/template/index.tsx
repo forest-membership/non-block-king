@@ -1,4 +1,5 @@
 import React from 'react';
+import ToastBox from '../../../components/molecules/ToastBox';
 import * as S from './style';
 
 interface IMainViewTemplateProps {
@@ -29,6 +30,7 @@ function MainViewTemplate({
   return (
     <S.Template>
       <S.ContentWrapper>{renderContent()}</S.ContentWrapper>
+      {token && <ToastBox duration={3000}>환영합니다 😄</ToastBox>}
     </S.Template>
   );
 }
