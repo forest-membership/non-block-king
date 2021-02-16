@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
 import MainViewTemplate from './template';
 import NicknameForm from '../../components/molecules/NicknameForm';
 import ModeSelectBox from '../../components/molecules/ModeSelectBox';
@@ -15,6 +16,7 @@ function requestAsync() {
 }
 
 function MainView(): JSX.Element {
+  const history = useHistory();
   const [signinResponse, requestSignIn] = useAsync(requestAsync);
   const [nicknameResponse, requestNickname] = useAsync(AuthAPI.getNickname);
 
@@ -28,8 +30,7 @@ function MainView(): JSX.Element {
   };
 
   const handleModeSelect = useCallback((mode: string) => {
-    /** TODO: 선택된 모드로 라우팅 */
-    console.log(mode);
+    history.push(`/${mode}`);
   }, []);
 
   const handleGenerateNickname = useCallback(

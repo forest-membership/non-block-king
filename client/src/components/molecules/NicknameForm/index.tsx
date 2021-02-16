@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from '../../atoms/Button';
+import { FiRefreshCcw } from 'react-icons/fi';
 import * as S from './style';
 
 export interface INicknameFormProps {
@@ -29,7 +30,7 @@ function NicknameForm({
           color="ligntgreen"
           onClick={onGenerateNickname}
         >
-          닉네임 재생성
+          <FiRefreshCcw />
         </Button>
       </S.InputWrapper>
 

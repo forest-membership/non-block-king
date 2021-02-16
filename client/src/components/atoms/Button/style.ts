@@ -47,4 +47,5 @@ export const Button = styled.button<IStyledButtonProps>`
   color: ${(props) => getFontColor(props)};
   font-size: 1rem;
   font-weight: 500;
+  cursor: pointer;
 `;
