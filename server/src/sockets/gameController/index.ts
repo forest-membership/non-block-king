@@ -1,25 +1,47 @@
-const keyPressEvent = (socket: any) => {
+import { Socket } from 'socket.io';
+
+export const addKeyPressEvent = (
+  serverSocket: any,
+  socket: Socket,
+  userNumber: number
+) => {
   socket.on('pressUpKey', () => {
-    console.log('업을 눌렀습니다.');
+    serverSocket.to(`user:${userNumber}`).emit('message', '업을 눌렀습니다.');
   });
+
   socket.on('pressDownKey', () => {
-    console.log('다운을 눌렀습니다.');
+    serverSocket.to(`user:${userNumber}`).emit('message', '다운을 눌렀습니다.');
   });
+
   socket.on('pressLeftKey', () => {
-    console.log('왼쪽을 눌렀습니다.');
+    serverSocket.to(`user:${userNumber}`).emit('message', '왼쪽을 눌렀습니다.');
   });
+
   socket.on('pressRightKey', () => {
-    console.log('오른쪽을 눌렀습니다.');
+    serverSocket
+      .to(`user:${userNumber}`)
+      .emit('message', '오른쪽을 눌렀습니다.');
   });
+
   socket.on('pressEscapeKey', () => {
-    console.log('ESC를 눌렀습니다.');
+    serverSocket.to(`user:${userNumber}`).emit('message', 'ESC를 눌렀습니다.');
   });
+
   socket.on('pressLeftRotateKey', () => {
-    console.log('Z를 눌렀습니다.');
+    serverSocket.to(`user:${userNumber}`).emit('message', 'Z를 눌렀습니다.');
   });
+
   socket.on('pressRightRotateKey', () => {
-    console.log('X를 눌렀습니다.');
+    serverSocket.emit('message', 'X를 눌렀습니다.');
   });
 };
 
-export default keyPressEvent;
+export const removeKeyPressEvent = (socket: Socket) => {
+  socket.removeAllListeners('pressUpKey');
+  socket.removeAllListeners('pressDownKey');
+  socket.removeAllListeners('pressLeftKey');
+  socket.removeAllListeners('pressRightKey');
+  socket.removeAllListeners('pressEscapeKey');
+  socket.removeAllListeners('pressLeftRotateKey');
+  socket.removeAllListeners('pressRightRotateKey');
+};
