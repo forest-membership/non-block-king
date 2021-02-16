@@ -6,7 +6,7 @@ export const Form = styled.form`
   display: flex;
   flex-direction: column;
   padding: 20px;
-  border: 1px solid ${(props) => props.theme.colors.green};
+  border: 1px solid ${(props) => props.theme.colors.ligntgreen};
   border-radius: 12px;
 `;
 
@@ -14,7 +14,7 @@ export const NicknameInput = styled(Input)`
   width: 250px;
   margin-right: auto;
   background-color: transparent;
-  color: ${(props) => props.theme.colors.green};
+  color: ${(props) => props.theme.colors.ligntgreen};
   outline: none;
   font-size: 1.5rem;
 `;

@@ -9,7 +9,7 @@ import AuthAPI from '../../apis/auth';
 function requestAsync() {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      resolve('success');
+      resolve({ data: 'success' });
     }, 3000);
   });
 }
@@ -21,10 +21,10 @@ function MainView(): JSX.Element {
   const { isLoading, data: token, error: signinError } = signinResponse;
   const { data: issuedNickname, error: nicknameError } = nicknameResponse;
 
-  const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSignIn = (e: React.FormEvent<HTMLFormElement>) => {
     /** TODO: issuedNickname 활용해서 로그인 API 요청 */
     e.preventDefault();
-    await requestSignIn();
+    requestSignIn();
   };
 
   const handleModeSelect = useCallback((mode: string) => {
