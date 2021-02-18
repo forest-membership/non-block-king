@@ -1,11 +1,13 @@
 import { Socket } from 'socket.io';
-import { sendMessageToUser, sendGameMapToUser } from '@/sockets/common';
-import { addKeyPressEvent, removeKeyPressEvent } from '../gameController';
+import { sendMessageToUser } from '@/sockets/messageManager';
+import {
+  addKeyPressEvent,
+  removeAllKeyPressEvents,
+} from '@/sockets/eventManager';
 import TetrisMap from '@/service/map';
 
 const roomManager = (serverSocket: any, socket: Socket, userNumber: number) => {
   const userName = `user:${userNumber}`;
-  const userGameMap = new TetrisMap();
   let isEntered = false;
 
   socket.on('join', () => {
@@ -14,10 +16,14 @@ const roomManager = (serverSocket: any, socket: Socket, userNumber: number) => {
     }
     socket.join('room1');
     sendMessageToUser(serverSocket, userName, '입장하였습니다.');
-    const mapState = userGameMap.offerUserMap;
-    sendGameMapToUser(serverSocket, userName, mapState);
+    const userGameMap = new TetrisMap();
+
+    // TODO : 클라이언트는 아래 데이터를 받아다가 맵을 렌더링한다.
+    // const mapState = userGameMap.offerUserMap;
+    // sendGameMapToUser(serverSocket, userName, mapState);
+
     // TODO : 게임이 시작됨을 알리는 소켓 이벤트 위치로 이동시킬 것.
-    addKeyPressEvent(serverSocket, socket, userNumber);
+    addKeyPressEvent(serverSocket, socket, userNumber, userGameMap);
     isEntered = true;
   });
 
@@ -27,7 +33,7 @@ const roomManager = (serverSocket: any, socket: Socket, userNumber: number) => {
     }
     socket.leave('room1');
     sendMessageToUser(serverSocket, userName, '퇴장하였습니다.');
-    removeKeyPressEvent(socket);
+    removeAllKeyPressEvents(socket);
     isEntered = false;
   });
 
