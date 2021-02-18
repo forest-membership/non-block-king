@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import * as S from './style';
 
-interface IToastBoxProps {
+export interface IToastBoxProps {
   /** 팝업 지속시간(ms) */
   duration: number;
   /** 토스트 팝업에 노출할 컨텐츠 */
