@@ -11,7 +11,7 @@ function getBackgroundColor({ theme, variant, color }: IStyledButtonProps) {
     case 'contained':
       return theme.colors[color];
     case 'outlined':
-      return theme.colors.white;
+      return 'transparent';
     default:
       return '';
   }
@@ -40,9 +40,12 @@ function getBorder({ theme, variant, color }: IStyledButtonProps) {
 }
 
 export const Button = styled.button<IStyledButtonProps>`
-  padding: 10px;
+  padding: 20px 10px;
   border: ${(props) => getBorder(props)};
   border-radius: ${(props) => props.theme.radiuses.button};
   background-color: ${(props) => getBackgroundColor(props)};
   color: ${(props) => getFontColor(props)};
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
 `;
