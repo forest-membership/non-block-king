@@ -13,3 +13,12 @@ export const ContentWrapper = styled.div`
   width: 400px;
   height: fit-content;
 `;
+
+export const RankingWrapper = styled.div`
+  position: absolute;
+  top: 30%;
+  left: 10%;
+  right: 10%;
+  display: flex;
+  justify-content: space-between;
+`;
