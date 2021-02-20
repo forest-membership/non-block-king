@@ -8,7 +8,8 @@
     "build": "webpack --mode production",
     "test": "jest --coverage --watchAll",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "chromatic": "npx chromatic --project-token 139bc57a6cdc"
   },
   "author": "",
   "license": "ISC",
