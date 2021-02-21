@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import MainViewTemplate from './template';
 import NicknameForm from '../../components/molecules/NicknameForm';
 import ModeSelectBox from '../../components/molecules/ModeSelectBox';
+import RankingList from '../../components/molecules/RankingList';
 import useAsync from '../../hooks/useAsync';
 import AuthAPI from '../../apis/auth';
 
@@ -14,6 +15,15 @@ function requestAsync() {
     }, 3000);
   });
 }
+
+// TODO: 실제 랭킹 API와 연동 필요
+const dummy = [
+  { ordinal: '1st', username: 'apple', score: 5000 },
+  { ordinal: '2nd', username: 'banana', score: 4000 },
+  { ordinal: '3th', username: 'pineapple', score: 3000 },
+  { ordinal: '4th', username: 'grape', score: 2000 },
+  { ordinal: '5th', username: 'peach', score: 1000 },
+];
 
 function MainView(): JSX.Element {
   const history = useHistory();
@@ -55,6 +65,8 @@ function MainView(): JSX.Element {
         />
       }
       modeSelectBox={<ModeSelectBox onSelect={handleModeSelect} />}
+      rankingListLeft={<RankingList rankingItems={dummy} />}
+      rankingListRight={<RankingList rankingItems={dummy} />}
     />
   );
 }
