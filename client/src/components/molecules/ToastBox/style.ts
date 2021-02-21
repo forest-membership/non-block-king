@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const ToastBox = styled.div`
-  position: absolute;
+  position: fixed;
   bottom: -100px;
   right: 50px;
   padding: 20px 40px;
