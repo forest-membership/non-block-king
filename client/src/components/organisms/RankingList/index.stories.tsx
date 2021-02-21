@@ -3,7 +3,7 @@ import { Meta, Story } from '@storybook/react/types-6-0';
 import RankingList, { IRankingListProps } from '.';
 
 export default {
-  title: 'Molecules/RankingList',
+  title: 'Organisms/RankingList',
   component: RankingList,
   parameters: {
     componentSubtitle: '랭킹 리스트',
