@@ -4,7 +4,7 @@ export const basicTheme: DefaultTheme = {
   colors: {
     white: '#ffffff',
     black: '#202020',
-    gray: '#a9a9a9',
+    gray: '#808080',
     lightgray: '#efefef',
     darkgray: '#565656',
     green: '#8ce99a',
