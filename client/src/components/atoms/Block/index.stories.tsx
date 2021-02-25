@@ -10,8 +10,8 @@ export default {
   },
 } as Meta;
 
-const Template: Story<IBlockProps> = (args: IBlockProps) => (
-  <Block>{args.children}</Block>
+const Template: Story<IBlockProps> = ({ children, ...args }: IBlockProps) => (
+  <Block {...args}>{children}</Block>
 );
 
 export const Default = Template.bind({});
