@@ -16,13 +16,13 @@ export interface IMinoPreviewBlock {
 function MinoPreviewBlock({ mino }: IMinoPreviewBlock): JSX.Element {
   const drawMino = useCallback(
     (context: CanvasRenderingContext2D) => {
-      context.fillStyle = 'yellow';
+      context.fillStyle = 'yellow'; // TODO: 미노 식별자로 색상 구분하기
       context.scale(BLOCK_SIZE, BLOCK_SIZE);
 
       mino.blockArea.forEach((row: number[], r: IndexType) => {
         row.forEach((value: number, c: IndexType) => {
           if (value > 0) {
-            context.fillRect(r, c, 1, 1);
+            context.fillRect(c, r, 1, 1);
           }
         });
       });
