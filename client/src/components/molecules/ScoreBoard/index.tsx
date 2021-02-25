@@ -1,6 +1,6 @@
 import React from 'react';
 import Text from '../../atoms/Text';
-import Block from '../../atoms/Block';
+import * as S from './style';
 
 export interface IScoreBoardProps {
   /** 획득한 점수 */
@@ -9,9 +9,9 @@ export interface IScoreBoardProps {
 
 function ScoreBoard({ score }: IScoreBoardProps): JSX.Element {
   return (
-    <Block>
+    <S.ScoreBoard>
       <Text>점수 : {score}</Text>
-    </Block>
+    </S.ScoreBoard>
   );
 }
 
