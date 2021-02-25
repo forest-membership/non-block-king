@@ -18,6 +18,7 @@ export const Default = Template.bind({});
 Default.args = {
   minos: [
     {
+      seq: 1,
       blockArea: [
         [1, 0, 0, 0],
         [1, 0, 0, 0],
@@ -26,6 +27,7 @@ Default.args = {
       ],
     },
     {
+      seq: 2,
       blockArea: [
         [1, 0, 0, 0],
         [1, 1, 0, 0],
@@ -34,6 +36,7 @@ Default.args = {
       ],
     },
     {
+      seq: 3,
       blockArea: [
         [1, 1, 1, 0],
         [0, 0, 1, 0],
@@ -42,6 +45,7 @@ Default.args = {
       ],
     },
     {
+      seq: 4,
       blockArea: [
         [1, 1, 0, 0],
         [1, 1, 0, 0],
