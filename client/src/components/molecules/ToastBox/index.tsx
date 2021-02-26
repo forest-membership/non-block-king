@@ -33,7 +33,7 @@ function ToastBox({ duration, children }: IToastBoxProps): JSX.Element {
 }
 
 ToastBox.defaultProps = {
-  duration: 0.2,
+  duration: 3000,
 };
 
 export default ToastBox;

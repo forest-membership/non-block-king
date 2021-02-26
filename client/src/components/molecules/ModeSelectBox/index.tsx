@@ -15,13 +15,13 @@ function ModeSelectBox({ onSelect }: IModeSelectBoxProps): JSX.Element {
 
   return (
     <S.SelectBox onClick={handleClick}>
-      <Button id="PvP" variant="outlined" color="ligntgreen">
+      <Button id="pvp" variant="outlined" color="ligntgreen">
         1:1 랜덤 매칭
       </Button>
-      <Button id="PvF" variant="outlined" color="ligntgreen">
+      <Button id="pvf" variant="outlined" color="ligntgreen">
         친구랑 함께
       </Button>
-      <Button id="PvE" variant="outlined" color="ligntgreen">
+      <Button id="pve" variant="outlined" color="ligntgreen">
         모두와 함께
       </Button>
     </S.SelectBox>

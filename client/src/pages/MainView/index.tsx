@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import MainViewTemplate from './template';
 import NicknameForm from '../../components/molecules/NicknameForm';
 import ModeSelectBox from '../../components/molecules/ModeSelectBox';
-import RankingList from '../../components/molecules/RankingList';
+import RankingList from '../../components/organisms/RankingList';
 import useAsync from '../../hooks/useAsync';
 import AuthAPI from '../../apis/auth';
 

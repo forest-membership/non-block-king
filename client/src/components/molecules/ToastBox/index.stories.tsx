@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Meta, Story } from '@storybook/react/types-6-0';
 import ToastBox, { IToastBoxProps } from '.';
 
@@ -10,9 +10,21 @@ export default {
   },
 } as Meta;
 
-const Template: Story<IToastBoxProps> = (args) => (
-  <ToastBox {...args}>안녕하세요!</ToastBox>
-);
+const Template: Story<IToastBoxProps> = (args: IToastBoxProps) => {
+  const [open, setOpen] = useState(false);
+
+  const handleToggle = () => {
+    setOpen(true);
+    setTimeout(() => setOpen(false), args.duration + 1000);
+  };
+
+  return (
+    <>
+      <button onClick={handleToggle}>모달 띄우기</button>
+      {open && <ToastBox {...args}>안녕하세요! 😄</ToastBox>}
+    </>
+  );
+};
 
 export const Default = Template.bind({});
 Default.args = {

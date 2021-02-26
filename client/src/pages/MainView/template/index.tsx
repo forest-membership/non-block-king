@@ -1,5 +1,6 @@
 import React from 'react';
 import ToastBox from '../../../components/molecules/ToastBox';
+import Spinner from '../../../components/atoms/Spinner';
 import * as S from './style';
 
 interface IMainViewTemplateProps {
@@ -21,7 +22,7 @@ function MainViewTemplate({
 }: IMainViewTemplateProps): JSX.Element {
   const renderContent = () => {
     const targetContent = isLoading ? (
-      <div>로딩중</div>
+      <Spinner />
     ) : token ? (
       modeSelectBox
     ) : (
