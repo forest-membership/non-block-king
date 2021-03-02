@@ -8,6 +8,8 @@ export const addKeyPressEvent = (
   userNumber: number,
   userGameMap: TetrisGame
 ) => {
+  console.log('previewInit : ', userGameMap.previewMinoInit());
+
   const userName = `user:${userNumber}`;
   socket.on('pressUpKey', (data) => {
     sendMessageToUser(serverSocket, userName, data);
@@ -92,6 +94,12 @@ export const addKeyPressEvent = (
 
   socket.on('pressRightRotateKey', (data) => {
     sendMessageToUser(serverSocket, userName, data);
+  });
+
+  socket.on('test', (data) => {
+    sendMessageToUser(serverSocket, userName, data);
+    userGameMap.getNextMino();
+    console.log('next Preview : ', userGameMap.previewMino().name);
   });
 };
 

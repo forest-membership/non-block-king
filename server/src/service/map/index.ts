@@ -8,19 +8,23 @@ const MINO_HEIGHT = 4;
 const MINO_WIDTH = 4;
 const TETRA = 4;
 
-const MAP_WIDTH = 4;
-const MAP_HEIGHT = 5 + MINO_HEIGHT;
+const MAP_WIDTH = 10;
+const MAP_HEIGHT = 20 + MINO_HEIGHT;
+
+const PREVIEW_NUM = 3;
 
 class TetrisGame {
   private gameMap: number[][];
   public gamePoint: number;
+  private subMinoSet: Mino[];
   private activeMinoSet: Mino[];
   private activeMino: Mino;
 
   constructor() {
     this.gameMap = create2DArray<STATUS>(MAP_HEIGHT, MAP_WIDTH, STATUS.VOID);
     this.gamePoint = 0;
-    this.activeMinoSet = [];
+    this.activeMinoSet = getNextMinos();
+    this.subMinoSet = getNextMinos();
     this.activeMino = this.getNextMino();
     this.moveMino('NONE');
   }
@@ -29,12 +33,34 @@ class TetrisGame {
     return this.gameMap;
   }
 
+  previewMinoInit() {
+    const newArr = [];
+    for (let i = PREVIEW_NUM; i < this.activeMinoSet.length; i++) {
+      newArr.push(this.activeMinoSet[i]);
+    }
+    return newArr;
+  }
+
+  previewMino() {
+    return this.activeMinoSet[PREVIEW_NUM];
+  }
+
   getNextMino(): Mino {
-    if (!this.activeMinoSet.length) {
-      this.activeMinoSet = getNextMinos();
+    if (!this.subMinoSet.length) {
+      this.subMinoSet = getNextMinos();
     }
 
+    this.activeMinoSet = [this.subMinoSet.pop() as Mino, ...this.activeMinoSet];
     const nextMino = this.activeMinoSet.pop() as Mino;
+    console.log(
+      'sub : ',
+      this.subMinoSet.map((el: any) => el.name)
+    );
+    console.log(
+      'act : ',
+      this.activeMinoSet.map((el: any) => el.name)
+    );
+
     return nextMino;
   }
 
@@ -124,7 +150,6 @@ class TetrisGame {
       }
     }
     this.print();
-    console.log('move : ', this.gameMap);
     return true;
   }
 
