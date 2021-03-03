@@ -1,13 +1,10 @@
 import React, { useCallback } from 'react';
 import Canvas from '../../atoms/Canvas';
 import { BLOCK_SIZE, CANVAS_ROWS, CANVAS_COLS } from './constants';
+import { IMino } from '../../../@types';
 import * as S from './style';
 
 type IndexType = number;
-
-interface IMino {
-  blockArea: number[][];
-}
 
 export interface IMinoPreviewBlock {
   mino: IMino;

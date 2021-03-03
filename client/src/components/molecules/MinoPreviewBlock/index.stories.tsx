@@ -17,6 +17,7 @@ const Template: Story<IMinoPreviewBlock> = (args: IMinoPreviewBlock) => (
 export const Default = Template.bind({});
 Default.args = {
   mino: {
+    seq: 1,
     blockArea: [
       [1, 0, 0, 0],
       [1, 0, 0, 0],
