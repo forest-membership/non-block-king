@@ -8,7 +8,7 @@ export const addKeyPressEvent = (
   userNumber: number,
   userGameMap: TetrisGame
 ) => {
-  console.log('previewInit : ', userGameMap.previewMinoInit());
+  // console.log('previewInit : ', userGameMap.previewMinoInit());
 
   const userName = `user:${userNumber}`;
   socket.on('pressUpKey', (data) => {
@@ -90,16 +90,30 @@ export const addKeyPressEvent = (
 
   socket.on('pressLeftRotateKey', (data) => {
     sendMessageToUser(serverSocket, userName, data);
+    if (userGameMap.rotateMino('COUNTER_CLOCK_WISE')) {
+      console.log('반시계 방향으로 회전합니다.');
+      return sendMessageToUser(
+        serverSocket,
+        userName,
+        '블럭을 회전시켰습니다.'
+      );
+    }
+    console.log('회전에 실패했습니다.');
+    return sendMessageToUser(serverSocket, userName, '회전에 실패했습니다.');
   });
 
   socket.on('pressRightRotateKey', (data) => {
     sendMessageToUser(serverSocket, userName, data);
-  });
-
-  socket.on('test', (data) => {
-    sendMessageToUser(serverSocket, userName, data);
-    userGameMap.getNextMino();
-    console.log('next Preview : ', userGameMap.previewMino().name);
+    if (userGameMap.rotateMino('CLOCK')) {
+      console.log('시계 방향으로 회전합니다.');
+      return sendMessageToUser(
+        serverSocket,
+        userName,
+        '블럭을 회전시켰습니다.'
+      );
+    }
+    console.log('회전에 실패했습니다.');
+    return sendMessageToUser(serverSocket, userName, '회전에 실패했습니다.');
   });
 };
 

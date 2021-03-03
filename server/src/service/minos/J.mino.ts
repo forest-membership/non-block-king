@@ -3,13 +3,12 @@ import Position from '@/types/position';
 import STATUS from '@/service/status';
 
 class JMino extends Mino {
+  color: string;
   name: string;
 
-  constructor(
-    color: string = 'white',
-    initValue: Position = { xPos: 0, yPos: 0 }
-  ) {
-    super(color);
+  constructor(initValue: Position = { xPos: 0, yPos: 0 }) {
+    super();
+    this.color = 'orange';
     this.name = 'J';
     this.pivotReferenceBlock.xPos = initValue.xPos;
     this.pivotReferenceBlock.yPos = initValue.yPos;
@@ -17,10 +16,10 @@ class JMino extends Mino {
   }
 
   init() {
-    this.blockArea[0][1] = STATUS.MINO;
-    this.blockArea[1][1] = STATUS.MINO;
-    this.blockArea[2][1] = STATUS.MINO;
-    this.blockArea[2][0] = STATUS.MINO;
+    this.blockArea[0][1] = STATUS.J_MINO;
+    this.blockArea[1][1] = STATUS.J_MINO;
+    this.blockArea[2][1] = STATUS.J_MINO;
+    this.blockArea[2][0] = STATUS.J_MINO;
   }
 }
 
