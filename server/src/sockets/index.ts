@@ -1,24 +1,28 @@
-import io from "socket.io";
+import io from 'socket.io';
+// import keyPressEvent from '@/sockets/gameController';
+import gameManager from '@/sockets/gameManager';
+
+// TODO: 클라이언트에서 닉네임 보내면 해싱해서 사용하기
+let userNumber = 0;
 
 const initSocket = (server: any) => {
-    const socketIO: io.Server = new io.Server(server);
-    socketIO.on("connect", (socket) => {
-        console.log("클라이언트와 연결되었습니다.");
-        socket.on("pressUpKey", () => {
-            console.log("업을 눌렀습니다.");
-        });
-        socket.on("pressDownKey", () => {
-            console.log("다운을 눌렀습니다.");
-        });
-        socket.on("pressLeftKey", () => {
-            console.log("왼쪽을 눌렀습니다.");
-        });
-        socket.on("pressRightKey", () => {
-            console.log("오른쪽을 눌렀습니다.");
-        });
+  const serverSocket: io.Server = new io.Server(server);
+  serverSocket.on('connect', (socket) => {
+    console.log(`클라이언트 user${userNumber} 님이 연결되었습니다.`);
+    socket.join(`user:${userNumber}`);
+
+    // keyPressEvent(serverSocket, socket, userNumber);
+    // roomManager(serverSocket, socket, userNumber);
+    gameManager(serverSocket, socket, userNumber);
+
+    socket.on('message', (data: string) => {
+      serverSocket.emit('message', data);
     });
 
-    return socketIO;
+    userNumber++;
+  });
+
+  return serverSocket;
 };
 
 export default initSocket;

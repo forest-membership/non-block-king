@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+  </head>
+  <body>
+    <button id="hello button" onclick="helloFunction()">connected?</button>
+  </body>
+  <script src="https://cdn.socket.io/3.1.1/socket.io.min.js"></script>
+  <script>
+    const socket = io.connect('http://127.0.0.1:3000', {
+      transports: ['websocket'],
+    });
+
+    socket.on('connect', (server) => {
+      console.log('서버와 연결되었습니다.');
+    });
+
+    socket.on('hello', () => console.log('서버 측이 hello를 받았습니다.'));
+    socket.on('message', (data) => {
+      console.log(`메세지를 수신 받았습니다. : ${data}`);
+    });
+
+    socket.on('gameMap', (map) => {
+      console.log('game 맵을 출력합니다.');
+      for (let i = 0; i < map.length; i++) {
+        console.log(map[i]);
+      }
+    });
+
+    document.addEventListener('keydown', (keyboardEvent) => {
+      console.log(keyboardEvent.key);
+      if (keyboardEvent.key === 'ArrowDown') {
+        socket.emit('pressDownKey', 'down');
+      }
+      if (keyboardEvent.key === 'ArrowUp') {
+        socket.emit('pressUpKey', 'up');
+      }
+      if (keyboardEvent.key === 'ArrowLeft') {
+        socket.emit('pressLeftKey', 'left');
+      }
+      if (keyboardEvent.key === 'ArrowRight') {
+        socket.emit('pressRightKey', 'right');
+      }
+      if (keyboardEvent.key === 'Escape') {
+        socket.emit('pressEscapeKey', 'escape');
+      }
+      if (keyboardEvent.key === 'j') {
+        socket.emit('join', 'join');
+      }
+      if (keyboardEvent.key === 'l') {
+        socket.emit('quit', 'leave');
+      }
+      if (keyboardEvent.key === 'Escape') {
+        socket.emit('pressEscapeKey', 'Escape');
+      }
+      if (keyboardEvent.key === 'z') {
+        socket.emit('pressLeftRotateKey', 'z');
+      }
+      if (keyboardEvent.key === 'x') {
+        socket.emit('pressRightRotateKey', 'x');
+      }
+    });
+  </script>
+</html>

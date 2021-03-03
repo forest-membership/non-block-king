@@ -1,6 +1,6 @@
 import getNextMinos from '@/service/minos';
 import STATUS from '@/service/status';
-import Block from '@/service/minos/block';
+// import Block from '@/service/minos/block';
 import Mino from '@/service/minos/mino';
 import { create2DArray } from '@/utils';
 
@@ -11,58 +11,102 @@ const TETRA = 4;
 const MAP_WIDTH = 10;
 const MAP_HEIGHT = 20 + MINO_HEIGHT;
 
+const PREVIEW_NUM = 3;
+
 class TetrisGame {
   private gameMap: number[][];
   public gamePoint: number;
-  private curMinoSet: Mino[];
-  private curMino?: Mino;
+  private subMinoSet: Mino[];
+  private activeMinoSet: Mino[];
+  private activeMino: Mino;
 
   constructor() {
-    this.gameMap = create2DArray<STATUS>(MAP_WIDTH, MAP_HEIGHT, STATUS.VOID);
+    this.gameMap = create2DArray<STATUS>(MAP_HEIGHT, MAP_WIDTH, STATUS.VOID);
     this.gamePoint = 0;
-    this.curMinoSet = getNextMinos();
-    this.curMino = this.getNextMino();
+    this.activeMinoSet = getNextMinos();
+    this.subMinoSet = getNextMinos();
+    this.activeMino = this.getNextMino();
+    this.moveMino('NONE');
   }
 
-  getNextMino(): Mino | undefined {
-    if (!this.curMinoSet.length) {
-      this.curMinoSet = getNextMinos();
+  public get offerUserMap(): number[][] {
+    return this.gameMap;
+  }
+
+  previewMinoInit() {
+    const newArr = [];
+    for (let i = PREVIEW_NUM; i < this.activeMinoSet.length; i++) {
+      newArr.push(this.activeMinoSet[i]);
+    }
+    return newArr;
+  }
+
+  previewMino() {
+    return this.activeMinoSet[PREVIEW_NUM];
+  }
+
+  getNextMino(): Mino {
+    if (!this.subMinoSet.length) {
+      this.subMinoSet = getNextMinos();
     }
 
-    const nextMino = this.curMinoSet.pop();
+    this.activeMinoSet = [this.subMinoSet.pop() as Mino, ...this.activeMinoSet];
+    const nextMino = this.activeMinoSet.pop() as Mino;
+    console.log(
+      'sub : ',
+      this.subMinoSet.map((el: any) => el.name)
+    );
+    console.log(
+      'act : ',
+      this.activeMinoSet.map((el: any) => el.name)
+    );
+
     return nextMino;
   }
 
-  isMovable() {
-    if (!this.curMino) {
-      return false;
+  getWeight(ARROW: string): any {
+    switch (ARROW) {
+      case 'NONE':
+        return { Y_WEIGHT: 0, X_WEIGHT: 0 };
+      case 'UP':
+        return { Y_WEIGHT: -1, X_WEIGHT: 0 };
+      case 'DOWN':
+        return { Y_WEIGHT: +1, X_WEIGHT: 0 };
+      case 'RIGHT':
+        return { Y_WEIGHT: 0, X_WEIGHT: +1 };
+      case 'LEFT':
+        return { Y_WEIGHT: 0, X_WEIGHT: -1 };
     }
+  }
 
-    const curMinoPivot = this.curMino.pivot;
-    const curMinoArea = this.curMino.area;
-    const pivotY = curMinoPivot.yPos + 1;
-    const pivotX = curMinoPivot.xPos;
+  isMovable(ARROW: string): boolean {
+    const { Y_WEIGHT, X_WEIGHT } = this.getWeight(ARROW);
+
+    const activeMinoPivot = this.activeMino.pivot;
+    const activeMinoArea = this.activeMino.area;
+    const pivotY = activeMinoPivot.yPos + Y_WEIGHT;
+    const pivotX = activeMinoPivot.xPos + X_WEIGHT;
 
     for (let i = pivotY; i < pivotY + MINO_HEIGHT; i++) {
       for (let j = pivotX; j < pivotX + MINO_WIDTH; j++) {
-        let curBlockOfMap;
-        if (this.gameMap[pivotY]) curBlockOfMap = this.gameMap[pivotY][pivotX];
+        const isTarget = activeMinoArea[i - pivotY][j - pivotX] === STATUS.MINO;
 
-        if (curMinoArea[i - pivotY][j - pivotX]) {
-          if (MAP_HEIGHT < i) {
+        if (isTarget) {
+          if (MAP_HEIGHT <= i || MAP_WIDTH <= j || i < 0 || j < 0) {
             return false;
           }
-        }
 
-        if (curBlockOfMap === STATUS.FULL) {
-          return false;
+          const activeBlockOfMap = this.gameMap[i][j];
+          if (activeBlockOfMap === STATUS.FULL) {
+            return false;
+          }
         }
       }
     }
     return true;
   }
 
-  removeMovingMino(): boolean {
+  flushActiveMino(): boolean {
     let count = 0;
     for (let i = 0; i < this.gameMap.length; i++) {
       for (let j = 0; j < this.gameMap[0].length; j++) {
@@ -78,63 +122,70 @@ class TetrisGame {
     return false;
   }
 
-  goDownBlock() {
-    if (!this.isMovable() || !this.curMino) {
+  moveMino(ARROW: string): boolean {
+    if (!this.isMovable(ARROW)) {
       return false;
     }
-    const curMinoPivot = this.curMino.pivot;
-    const curMinoArea = this.curMino.area;
-    const pivotY = curMinoPivot.yPos;
-    const pivotX = curMinoPivot.xPos;
+    const activeMinoPivot = this.activeMino.pivot;
+    const activeMinoArea = this.activeMino.area;
 
-    this.removeMovingMino();
-    this.curMino.pivot.yPos++;
+    this.flushActiveMino();
+
+    const { Y_WEIGHT, X_WEIGHT } = this.getWeight(ARROW);
+    activeMinoPivot.yPos += Y_WEIGHT;
+    activeMinoPivot.xPos += X_WEIGHT;
+    const pivotY = activeMinoPivot.yPos;
+    const pivotX = activeMinoPivot.xPos;
 
     for (let i = pivotY; i < pivotY + MINO_HEIGHT; i++) {
       for (let j = pivotX; j < pivotX + MINO_WIDTH; j++) {
         if (!this.gameMap[i]) {
           continue;
         }
-        this.gameMap[i][j] = curMinoArea[i - pivotY][j - pivotX];
+
+        if (this.gameMap[i][j] === STATUS.FULL) continue;
+        if (j >= MAP_WIDTH) continue;
+
+        this.gameMap[i][j] = activeMinoArea[i - pivotY][j - pivotX];
       }
     }
-  }
-
-  dispatchMinoToMap() {
-    this.curMino?.setpivotReference(new Block('red', 0, 0));
-    if (!this.curMino) {
-      return false;
-    }
-
-    const curMinoPivot = this.curMino.pivot;
-    const curMinoArea = this.curMino.area;
-    const pivotY = curMinoPivot.yPos;
-    const pivotX = curMinoPivot.xPos;
-
-    for (let i = pivotY; i < pivotY + MINO_HEIGHT; i++) {
-      for (let j = pivotX; j < pivotX + MINO_WIDTH; j++) {
-        this.gameMap[i][j] = curMinoArea[i - pivotY][j - pivotX];
-      }
-    }
-  }
-
-  pullNextLine(cur: number) {
-    for (let i = cur; i < MAP_HEIGHT - 1; i++) {
-      this.gameMap[i] = this.gameMap[i + 1];
-    }
-    this.gameMap[MAP_HEIGHT - 1] = new Array(MAP_WIDTH).fill(STATUS.VOID);
-  }
-
-  isLineFull(line: Array<number>): boolean {
-    for (let i = 0; i < line.length; i++) {
-      if (line[i] !== STATUS.FULL) return false;
-    }
+    this.print();
     return true;
   }
 
-  checkIfLineIsFullAndGiveScore(cur = 0) {
-    for (let i = cur; i < MAP_HEIGHT; i++) {
+  settleDownMino(): boolean {
+    for (let i = 0; i < MAP_HEIGHT; i++) {
+      for (let j = 0; j < MAP_WIDTH; j++) {
+        if (this.gameMap[i][j] == STATUS.MINO) {
+          this.gameMap[i][j] = STATUS.FULL;
+        }
+      }
+    }
+
+    this.activeMino = this.getNextMino();
+    this.checkIfLineIsFullAndGiveScore();
+    this.moveMino('NONE');
+    return true;
+  }
+
+  pullNextLine(activeY: number) {
+    for (let i = activeY; i >= 0; i--) {
+      this.gameMap[i] = this.gameMap[i - 1];
+    }
+    this.gameMap[0] = new Array(MAP_WIDTH).fill(STATUS.VOID);
+  }
+
+  isLineFull(line: Array<STATUS>): boolean {
+    console.log('line : ', line);
+    return line.every((cell) => cell === STATUS.FULL);
+  }
+
+  checkIfLineIsFullAndGiveScore(activeY = MAP_HEIGHT - 1) {
+    console.log('검사 해볼까!');
+    for (let i = activeY; i >= 0; i--) {
+      console.log('check function : ', this.gameMap[i]);
       if (this.isLineFull(this.gameMap[i])) {
+        console.log(`${i}번째 줄이 채워졌네요!`);
         this.pullNextLine(i);
         this.gamePoint++;
         i--;
