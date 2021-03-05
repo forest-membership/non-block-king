@@ -1,18 +1,14 @@
-import STATUS from '@/service/status';
 import Block from '@/service/minos/block';
 
 const TETRA = 4;
 
 class Mino {
-  [name: string]: any;
   protected blockArea: number[][];
   protected pivotReferenceBlock: Block;
 
-  constructor(color?: string) {
-    this.blockArea = new Array(TETRA)
-      .fill(0)
-      .map((el) => [STATUS.VOID, STATUS.VOID, STATUS.VOID, STATUS.VOID]);
-    this.pivotReferenceBlock = new Block(color);
+  constructor() {
+    this.blockArea = this.initBlockArea();
+    this.pivotReferenceBlock = new Block();
   }
 
   setpivotReference(block: Block) {
@@ -27,16 +23,31 @@ class Mino {
     return this.pivotReferenceBlock;
   }
 
+  private initBlockArea() {
+    return new Array(TETRA).fill(0).map((el) => [0, 0, 0, 0]);
+  }
+
   moveRight() {
-    this.pivotReferenceBlock.xPos++;
+    if (typeof this.pivotReferenceBlock.xPos === 'number') {
+      this.pivotReferenceBlock.xPos++;
+    }
   }
 
   moveLeft() {
-    this.pivotReferenceBlock.xPos--;
+    if (typeof this.pivotReferenceBlock.xPos === 'number') {
+      this.pivotReferenceBlock.xPos--;
+    }
   }
 
   moveDown() {
-    this.pivotReferenceBlock.yPos++;
+    if (typeof this.pivotReferenceBlock.yPos === 'number') {
+      this.pivotReferenceBlock.yPos++;
+    }
+  }
+  moveUp() {
+    if (typeof this.pivotReferenceBlock.xPos === 'number') {
+      this.pivotReferenceBlock.yPos--;
+    }
   }
 
   rotateLeft() {
@@ -47,7 +58,6 @@ class Mino {
       }
     }
     this.blockArea = newArea;
-    return this;
   }
 
   rotateRight() {
@@ -58,13 +68,6 @@ class Mino {
       }
     }
     this.blockArea = newArea;
-    return this;
-  }
-
-  print() {
-    for (let i = 0; i < TETRA; i++) {
-      console.log(this.blockArea[i]);
-    }
   }
 }
 

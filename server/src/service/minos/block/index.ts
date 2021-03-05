@@ -1,20 +1,18 @@
-import Position from "@/types/position";
+import Position from '@/types/position';
 
 class Block {
-    color?: string;
-    xPos: number;
-    yPos: number;
+  xPos: number;
+  yPos: number;
 
-    constructor(color?: string, xPos?: number, yPos?: number) {
-        this.color = color;
-        this.xPos = xPos || 0;
-        this.yPos = yPos || 0;
-    }
+  constructor(xPos?: number, yPos?: number) {
+    this.xPos = xPos || 0;
+    this.yPos = yPos || 0;
+  }
 
-    setPosition({ xPos, yPos }: Position) {
-        this.xPos = xPos;
-        this.yPos = yPos;
-    }
+  setPosition({ xPos, yPos }: Position) {
+    this.xPos = xPos;
+    this.yPos = yPos;
+  }
 }
 
 export default Block;

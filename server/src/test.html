@@ -46,7 +46,7 @@
         socket.emit('pressEscapeKey', 'escape');
       }
       if (keyboardEvent.key === 'j') {
-        socket.emit('join', 'join');
+        socket.emit('joinPvP', 'join');
       }
       if (keyboardEvent.key === 'l') {
         socket.emit('quit', 'leave');
@@ -59,6 +59,12 @@
       }
       if (keyboardEvent.key === 'x') {
         socket.emit('pressRightRotateKey', 'x');
+      }
+      if (keyboardEvent.key === 't') {
+        socket.emit('test', 't');
+      }
+      if (keyboardEvent.key === 's') {
+        socket.emit('start', 't');
       }
     });
   </script>
