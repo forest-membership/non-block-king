@@ -3,13 +3,12 @@ import Position from '@/types/position';
 import STATUS from '@/service/status';
 
 class ZMino extends Mino {
+  color: string;
   name: string;
 
-  constructor(
-    color: string = 'white',
-    initValue: Position = { xPos: 0, yPos: 0 }
-  ) {
-    super(color);
+  constructor(initValue: Position = { xPos: 0, yPos: 0 }) {
+    super();
+    this.color = 'purple';
     this.name = 'Z';
     this.pivotReferenceBlock.xPos = initValue.xPos;
     this.pivotReferenceBlock.yPos = initValue.yPos;
@@ -17,10 +16,10 @@ class ZMino extends Mino {
   }
 
   init() {
-    this.blockArea[0][0] = STATUS.MINO;
-    this.blockArea[0][1] = STATUS.MINO;
-    this.blockArea[1][1] = STATUS.MINO;
-    this.blockArea[1][2] = STATUS.MINO;
+    this.blockArea[0][0] = STATUS.Z_MINO;
+    this.blockArea[0][1] = STATUS.Z_MINO;
+    this.blockArea[1][1] = STATUS.Z_MINO;
+    this.blockArea[1][2] = STATUS.Z_MINO;
   }
 }
 
