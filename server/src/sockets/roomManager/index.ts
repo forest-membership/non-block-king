@@ -8,7 +8,7 @@ import TetrisMap from '@/service/map';
 
 const rooms: any = {};
 
-const userCounter = (roomName: string, userName: string) => {
+const roomCounter = (roomName: string, userName: string) => {
   if (!rooms[roomName]) {
     return (rooms[roomName] = new Array<string>(userName));
   }
@@ -26,7 +26,7 @@ const roomManager = (
 ) => {
   const userName = `user:${userNumber}`;
   socket.join(roomName);
-  userCounter(roomName, userName);
+  roomCounter(roomName, userName);
   console.log(rooms);
   sendMessageToUser(serverSocket, userName, '입장하였습니다.');
 
