@@ -31,6 +31,10 @@ const GlobalStyle = createGlobalStyle`
     height: 100%;
     object-fit: cover;
   }
+
+  #root {
+    height: 100vh;
+  }
 `;
 
 export default GlobalStyle;

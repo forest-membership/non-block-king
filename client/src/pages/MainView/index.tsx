@@ -1,7 +1,9 @@
 import React, { useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
 import MainViewTemplate from './template';
 import NicknameForm from '../../components/molecules/NicknameForm';
 import ModeSelectBox from '../../components/molecules/ModeSelectBox';
+import RankingList from '../../components/organisms/RankingList';
 import useAsync from '../../hooks/useAsync';
 import AuthAPI from '../../apis/auth';
 
@@ -9,27 +11,36 @@ import AuthAPI from '../../apis/auth';
 function requestAsync() {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      resolve('success');
+      resolve({ data: 'success' });
     }, 3000);
   });
 }
 
+// TODO: 실제 랭킹 API와 연동 필요
+const dummy = [
+  { ordinal: '1st', username: 'apple', score: 5000 },
+  { ordinal: '2nd', username: 'banana', score: 4000 },
+  { ordinal: '3th', username: 'pineapple', score: 3000 },
+  { ordinal: '4th', username: 'grape', score: 2000 },
+  { ordinal: '5th', username: 'peach', score: 1000 },
+];
+
 function MainView(): JSX.Element {
+  const history = useHistory();
   const [signinResponse, requestSignIn] = useAsync(requestAsync);
   const [nicknameResponse, requestNickname] = useAsync(AuthAPI.getNickname);
 
   const { isLoading, data: token, error: signinError } = signinResponse;
   const { data: issuedNickname, error: nicknameError } = nicknameResponse;
 
-  const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSignIn = (e: React.FormEvent<HTMLFormElement>) => {
     /** TODO: issuedNickname 활용해서 로그인 API 요청 */
     e.preventDefault();
-    await requestSignIn();
+    requestSignIn();
   };
 
   const handleModeSelect = useCallback((mode: string) => {
-    /** TODO: 선택된 모드로 라우팅 */
-    console.log(mode);
+    history.push(`/${mode}`);
   }, []);
 
   const handleGenerateNickname = useCallback(
@@ -54,6 +65,8 @@ function MainView(): JSX.Element {
         />
       }
       modeSelectBox={<ModeSelectBox onSelect={handleModeSelect} />}
+      rankingListLeft={<RankingList rankingItems={dummy} />}
+      rankingListRight={<RankingList rankingItems={dummy} />}
     />
   );
 }

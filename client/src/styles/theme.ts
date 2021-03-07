@@ -6,7 +6,9 @@ export const basicTheme: DefaultTheme = {
     black: '#202020',
     gray: '#808080',
     lightgray: '#efefef',
+    darkgray: '#565656',
     green: '#8ce99a',
+    ligntgreen: '#1fff2a',
   },
 
   sizes: {

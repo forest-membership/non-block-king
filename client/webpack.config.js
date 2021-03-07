@@ -52,6 +52,7 @@ module.exports = (env, options) => {
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, './public/index.html'),
+      favicon: path.resolve(__dirname, './public/favicon.ico'),
     }),
     new MiniCssExtractPlugin({
       filename: isDevelopment ? '[name].css' : '[name].[hash].css',
@@ -61,6 +62,7 @@ module.exports = (env, options) => {
     host: '127.0.0.1',
     port: 8000,
     hot: true,
+    historyApiFallback: true,
     contentBase: path.resolve(__dirname, 'dist'),
   };
 
