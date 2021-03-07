@@ -1,5 +1,5 @@
 import { Socket } from 'socket.io';
-import { sendMessageToUser } from '@/sockets/messageManager';
+import { sendGameMapToUser, sendMessageToUser } from '@/sockets/messageManager';
 import TetrisGame from '@/service/map';
 
 export const addKeyPressEvent = (
@@ -15,6 +15,7 @@ export const addKeyPressEvent = (
     sendMessageToUser(serverSocket, userName, data);
     if (userGameMap.moveMino('UP')) {
       console.log('위로 이동합니다.');
+      sendGameMapToUser(serverSocket, userName, userGameMap.offerUserMap);
       return sendMessageToUser(
         serverSocket,
         userName,
@@ -22,6 +23,7 @@ export const addKeyPressEvent = (
       );
     }
 
+    sendGameMapToUser(serverSocket, userName, userGameMap.offerUserMap);
     return sendMessageToUser(
       serverSocket,
       userName,
@@ -34,6 +36,7 @@ export const addKeyPressEvent = (
     const moveSuccess = userGameMap.moveMino('DOWN');
     if (moveSuccess) {
       console.log('아래로 이동합니다.');
+      sendGameMapToUser(serverSocket, userName, userGameMap.offerUserMap);
       return sendMessageToUser(
         serverSocket,
         userName,
@@ -41,6 +44,7 @@ export const addKeyPressEvent = (
       );
     }
     userGameMap.settleDownMino();
+    sendGameMapToUser(serverSocket, userName, userGameMap.offerUserMap);
     return sendMessageToUser(
       serverSocket,
       userName,
@@ -52,6 +56,7 @@ export const addKeyPressEvent = (
     sendMessageToUser(serverSocket, userName, data);
     if (userGameMap.moveMino('LEFT')) {
       console.log('왼쪽으로 이동합니다.');
+      sendGameMapToUser(serverSocket, userName, userGameMap.offerUserMap);
       return sendMessageToUser(
         serverSocket,
         userName,
@@ -59,6 +64,7 @@ export const addKeyPressEvent = (
       );
     }
 
+    sendGameMapToUser(serverSocket, userName, userGameMap.offerUserMap);
     return sendMessageToUser(
       serverSocket,
       userName,
@@ -70,6 +76,7 @@ export const addKeyPressEvent = (
     sendMessageToUser(serverSocket, userName, data);
     if (userGameMap.moveMino('RIGHT')) {
       console.log('오른쪽으로 이동합니다.');
+      sendGameMapToUser(serverSocket, userName, userGameMap.offerUserMap);
       return sendMessageToUser(
         serverSocket,
         userName,
@@ -77,6 +84,7 @@ export const addKeyPressEvent = (
       );
     }
 
+    sendGameMapToUser(serverSocket, userName, userGameMap.offerUserMap);
     return sendMessageToUser(
       serverSocket,
       userName,
@@ -84,21 +92,20 @@ export const addKeyPressEvent = (
     );
   });
 
-  socket.on('pressEscapeKey', (data) => {
-    sendMessageToUser(serverSocket, userName, data);
-  });
-
   socket.on('pressLeftRotateKey', (data) => {
     sendMessageToUser(serverSocket, userName, data);
     if (userGameMap.rotateMino('COUNTER_CLOCK_WISE')) {
       console.log('반시계 방향으로 회전합니다.');
+      sendGameMapToUser(serverSocket, userName, userGameMap.offerUserMap);
       return sendMessageToUser(
         serverSocket,
         userName,
         '블럭을 회전시켰습니다.'
       );
     }
+
     console.log('회전에 실패했습니다.');
+    sendGameMapToUser(serverSocket, userName, userGameMap.offerUserMap);
     return sendMessageToUser(serverSocket, userName, '회전에 실패했습니다.');
   });
 
@@ -106,6 +113,7 @@ export const addKeyPressEvent = (
     sendMessageToUser(serverSocket, userName, data);
     if (userGameMap.rotateMino('CLOCK')) {
       console.log('시계 방향으로 회전합니다.');
+      sendGameMapToUser(serverSocket, userName, userGameMap.offerUserMap);
       return sendMessageToUser(
         serverSocket,
         userName,
@@ -113,6 +121,7 @@ export const addKeyPressEvent = (
       );
     }
     console.log('회전에 실패했습니다.');
+    sendGameMapToUser(serverSocket, userName, userGameMap.offerUserMap);
     return sendMessageToUser(serverSocket, userName, '회전에 실패했습니다.');
   });
 };

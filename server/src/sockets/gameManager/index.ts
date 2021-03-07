@@ -13,6 +13,12 @@ const userCounter = (userName: string) => {
   }
 };
 
+const removeJoinEvents = (socket: Socket) => {
+  socket.removeAllListeners('joinPvP');
+  socket.removeAllListeners('joinPvF');
+  socket.removeAllListeners('joinPvE');
+};
+
 const gameManager = (serverSocket: any, socket: Socket, userNumber: number) => {
   const userName = `user:${userNumber}`;
   userCounter(userName);
@@ -21,22 +27,19 @@ const gameManager = (serverSocket: any, socket: Socket, userNumber: number) => {
   socket.on('joinPvP', () => {
     roomManager(serverSocket, socket, userNumber, `PvP${PvPNum}`);
     sendMessageToUser(serverSocket, userName, 'PvP에 입장');
-    socket.removeAllListeners('joinPvF');
-    socket.removeAllListeners('joinPvE');
+    removeJoinEvents(socket);
   });
 
   socket.on('joinPvF', () => {
     roomManager(serverSocket, socket, userNumber, `PvF${PvFNum}`);
     sendMessageToUser(serverSocket, userName, 'PvF에 입장');
-    socket.removeAllListeners('joinPvP');
-    socket.removeAllListeners('joinPvE');
+    removeJoinEvents(socket);
   });
 
   socket.on('joinPvE', () => {
     roomManager(serverSocket, socket, userNumber, `PvE${PvENum}`);
     sendMessageToUser(serverSocket, userName, 'PvE에 입장');
-    socket.removeAllListeners('joinPvA');
-    socket.removeAllListeners('joinPvF');
+    removeJoinEvents(socket);
   });
 };
 
