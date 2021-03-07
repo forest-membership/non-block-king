@@ -17,6 +17,7 @@
     });
 
     socket.on('hello', () => console.log('서버 측이 hello를 받았습니다.'));
+
     socket.on('message', (data) => {
       console.log(`메세지를 수신 받았습니다. : ${data}`);
     });
@@ -29,7 +30,7 @@
     });
 
     document.addEventListener('keydown', (keyboardEvent) => {
-      console.log(keyboardEvent.key);
+      console.log(keyboardEvent.key.toLowerCase());
       if (keyboardEvent.key === 'ArrowDown') {
         socket.emit('pressDownKey', 'down');
       }
@@ -47,6 +48,12 @@
       }
       if (keyboardEvent.key === 'j') {
         socket.emit('joinPvP', 'join');
+      }
+      if (keyboardEvent.key === 'p') {
+        socket.emit('joinPvF', 'join');
+      }
+      if (keyboardEvent.key === 'e') {
+        socket.emit('joinPvE', 'join');
       }
       if (keyboardEvent.key === 'l') {
         socket.emit('quit', 'leave');
