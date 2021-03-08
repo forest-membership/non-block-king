@@ -2,22 +2,24 @@ import { Socket } from 'socket.io';
 import { sendMessageToUser } from '@/sockets/messageManager';
 import roomManager from '../roomManager';
 
-const gameManager = (serverSocket: any, socket: Socket, userNumber: number) => {
+// TODO: GameManager 가 유저가 입장 요청을 보냈을 때 적절한 방을 찾아서 매칭해주도록 한다.
+const gameManager = (socket: Socket, userNumber: number) => {
   const userName = `user:${userNumber}`;
+  console.log(userName);
 
   socket.on('joinPvP', () => {
-    roomManager(serverSocket, socket, userNumber, 'PvP');
-    sendMessageToUser(serverSocket, userName, 'PvP에 입장');
+    roomManager(socket, userNumber, 'PvP');
+    sendMessageToUser(socket, 'PvP에 입장');
   });
 
   socket.on('joinPvF', () => {
-    roomManager(serverSocket, socket, userNumber, 'PvF');
-    sendMessageToUser(serverSocket, userName, 'PvF에 입장');
+    roomManager(socket, userNumber, 'PvF');
+    sendMessageToUser(socket, 'PvF에 입장');
   });
 
   socket.on('joinPvE', () => {
-    roomManager(serverSocket, socket, userNumber, 'PvE');
-    sendMessageToUser(serverSocket, userName, 'PvE에 입장');
+    roomManager(socket, userNumber, 'PvE');
+    sendMessageToUser(socket, 'PvE에 입장');
   });
 };
 

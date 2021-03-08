@@ -4,42 +4,48 @@ import {
   addKeyPressEvent,
   removeAllKeyPressEvents,
 } from '@/sockets/eventManager';
+import { generateRandomString } from '@/utils';
 import TetrisMap from '@/service/map';
 
-const roomManager = (
-  serverSocket: any,
-  socket: Socket,
-  userNumber: number,
-  roomName: string
-) => {
-  const userName = `user:${userNumber}`;
-  socket.join(roomName);
-  sendMessageToUser(serverSocket, userName, '입장하였습니다.');
+const generateRoomHashCode = () => generateRandomString(15, '');
 
-  socket.on('ready', () => {
-    sendMessageToUser(serverSocket, userName, '게임을 준비하였습니다.');
+const roomManager = (client: Socket, userNumber: number, mode: string) => {
+  const roomCode = `${mode}:${generateRoomHashCode()}`;
+  const userName = `user:${userNumber}`;
+  console.log(userName);
+
+  client.join(roomCode);
+
+  sendMessageToUser(client, '입장하였습니다. 👋');
+
+  client.on('ready', () => {
+    // TODO: 참가자가
+    sendMessageToUser(client, '게임을 준비하였습니다.');
   });
 
-  socket.on('start', () => {
-    // TODO : 방의 모든 사람이 준비되었는지 체크해야 하낟.
-    sendMessageToUser(serverSocket, userName, '게임을 시작하였습니다.');
+  client.on('start', () => {
+    // TODO: 방의 모든 사람이 준비되었는지 체크해야 함.
+    const isAllPlayerOnReady = true;
+    if (!isAllPlayerOnReady) return;
 
-    // TODO : 클라이언트는 아래 데이터를 받아다가 맵을 렌더링한다.
+    sendMessageToUser(client, '게임 시작! 🔥');
+
+    // TODO: 클라이언트는 아래 데이터를 받아다가 맵을 렌더링한다.
     // const mapState = userGameMap.offerUserMap;
     // sendGameMapToUser(serverSocket, userName, mapState);
 
     const userGameMap = new TetrisMap();
-    addKeyPressEvent(serverSocket, socket, userNumber, userGameMap);
+    addKeyPressEvent(client, userNumber, userGameMap);
   });
 
-  socket.on('lose', () => {
-    removeAllKeyPressEvents(socket);
-    sendMessageToUser(serverSocket, userName, '패배하였습니다.');
+  client.on('lose', () => {
+    removeAllKeyPressEvents(client);
+    sendMessageToUser(client, '패배하였습니다. 😫');
   });
 
-  socket.on('quit', () => {
-    socket.leave('room1');
-    sendMessageToUser(serverSocket, userName, '퇴장하였습니다.');
+  client.on('quit', () => {
+    client.leave('room1');
+    sendMessageToUser(client, '퇴장하였습니다. 👋');
   });
 };
 
