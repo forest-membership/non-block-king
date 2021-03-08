@@ -1,52 +1,52 @@
 import { Socket } from 'socket.io';
-import { sendMessageToUser } from '@/sockets/messageManager';
-import {
-  addKeyPressEvent,
-  removeAllKeyPressEvents,
-} from '@/sockets/eventManager';
+import * as MessageManager from '@/sockets/messageManager';
+import * as EventManager from '@/sockets/eventManager';
+import * as GameManager from '@/sockets/gameManager';
 import { generateRandomString } from '@/utils';
-import TetrisMap from '@/service/map';
 
-const generateRoomHashCode = () => generateRandomString(15, '');
+const HASH_LENGTH = 15;
 
-const roomManager = (client: Socket, userNumber: number, mode: string) => {
+function generateRoomHashCode() {
+  return generateRandomString(HASH_LENGTH, '');
+}
+
+function onReady(this: Socket) {
+  MessageManager.sendMessageToUser(this, '게임을 준비하였습니다.');
+}
+
+function onStart(this: Socket) {
+  // FIXME: 방의 모든 사람이 준비되었는지 체크해야 함.
+  const isAllPlayerOnReady = true;
+  if (!isAllPlayerOnReady) return;
+
+  // FIXME: 해당 방의 모든 참가자에게 게임 인스턴스 할당하는 것으로 변경
+  GameManager.initGameMap(this.id);
+  EventManager.attachKeyPressEvents(this);
+  MessageManager.sendMessageToUser(this, '게임 시작! 🔥');
+}
+
+function onLose(this: Socket) {
+  EventManager.detachKeyPressEvents(this);
+  MessageManager.sendMessageToUser(this, '패배하였습니다. 😫');
+}
+
+function onQuit(this: Socket) {
+  this.leave('room1'); // FIXME: room1 대신 실제 roomCode로 바꿔야함
+  MessageManager.sendMessageToUser(this, '퇴장하였습니다. 👋');
+}
+
+function attachRoomEvents(client: Socket) {
+  client.on('ready', onReady);
+  client.on('start', onStart);
+  client.on('lose', onLose);
+  client.on('quit', onQuit);
+}
+
+// TODO: RoomManager 가 유저가 입장 요청을 보냈을 때 적절한 방을 찾아서 매칭해주도록 한다.
+export function allocateRoom(client: Socket, mode: string) {
   const roomCode = `${mode}:${generateRoomHashCode()}`;
-  const userName = `user:${userNumber}`;
-  console.log(userName);
 
   client.join(roomCode);
-
-  sendMessageToUser(client, '입장하였습니다. 👋');
-
-  client.on('ready', () => {
-    // TODO: 참가자가
-    sendMessageToUser(client, '게임을 준비하였습니다.');
-  });
-
-  client.on('start', () => {
-    // TODO: 방의 모든 사람이 준비되었는지 체크해야 함.
-    const isAllPlayerOnReady = true;
-    if (!isAllPlayerOnReady) return;
-
-    sendMessageToUser(client, '게임 시작! 🔥');
-
-    // TODO: 클라이언트는 아래 데이터를 받아다가 맵을 렌더링한다.
-    // const mapState = userGameMap.offerUserMap;
-    // sendGameMapToUser(serverSocket, userName, mapState);
-
-    const userGameMap = new TetrisMap();
-    addKeyPressEvent(client, userNumber, userGameMap);
-  });
-
-  client.on('lose', () => {
-    removeAllKeyPressEvents(client);
-    sendMessageToUser(client, '패배하였습니다. 😫');
-  });
-
-  client.on('quit', () => {
-    client.leave('room1');
-    sendMessageToUser(client, '퇴장하였습니다. 👋');
-  });
-};
-
-export default roomManager;
+  attachRoomEvents(client);
+  MessageManager.sendMessageToUser(client, '입장하였습니다. 👋');
+}

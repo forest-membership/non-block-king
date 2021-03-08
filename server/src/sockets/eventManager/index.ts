@@ -40,7 +40,7 @@ export function attachKeyPressEvents(client: Socket) {
   client.on('pressEscapeKey', onKeyPressEscape);
 }
 
-export function removeAllKeyPressEvents(client: Socket) {
+export function detachKeyPressEvents(client: Socket) {
   client.removeAllListeners('pressUpKey');
   client.removeAllListeners('pressDownKey');
   client.removeAllListeners('pressLeftKey');
