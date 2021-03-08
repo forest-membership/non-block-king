@@ -1,4 +1,5 @@
 import Block from '@/service/minos/block';
+import STATUS from '@/service/status';
 
 const TETRA = 4;
 
@@ -24,28 +25,30 @@ class Mino {
   }
 
   private initBlockArea() {
-    return new Array(TETRA).fill(0).map((el) => [0, 0, 0, 0]);
+    return new Array(TETRA)
+      .fill(0)
+      .map((el) => [STATUS.VOID, STATUS.VOID, STATUS.VOID, STATUS.VOID]);
   }
 
   moveRight() {
-    if (typeof this.pivotReferenceBlock.xPos === 'number') {
+    if (!isNaN(this.pivotReferenceBlock.xPos)) {
       this.pivotReferenceBlock.xPos++;
     }
   }
 
   moveLeft() {
-    if (typeof this.pivotReferenceBlock.xPos === 'number') {
+    if (!isNaN(this.pivotReferenceBlock.xPos)) {
       this.pivotReferenceBlock.xPos--;
     }
   }
 
   moveDown() {
-    if (typeof this.pivotReferenceBlock.yPos === 'number') {
+    if (!isNaN(this.pivotReferenceBlock.yPos)) {
       this.pivotReferenceBlock.yPos++;
     }
   }
   moveUp() {
-    if (typeof this.pivotReferenceBlock.xPos === 'number') {
+    if (!isNaN(this.pivotReferenceBlock.xPos)) {
       this.pivotReferenceBlock.yPos--;
     }
   }

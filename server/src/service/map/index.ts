@@ -6,8 +6,8 @@ import { create2DArray } from '@/utils';
 const MINO_HEIGHT = 4;
 const MINO_WIDTH = 4;
 
-const MAP_WIDTH = 6;
-const MAP_HEIGHT = 8 + MINO_HEIGHT;
+const MAP_WIDTH = 10;
+const MAP_HEIGHT = 20 + MINO_HEIGHT;
 
 const PREVIEW_NUM = 3;
 
