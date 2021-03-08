@@ -1,87 +1,51 @@
 import { Socket } from 'socket.io';
-import { sendMessageToUser } from '@/sockets/messageManager';
-import TetrisGame from '@/service/map';
+import * as MessageManager from '@/sockets/messageManager';
+import * as GameManager from '@/sockets/gameManager';
 
-export const addKeyPressEvent = (
-  client: Socket,
-  userNumber: number,
-  gameMap: TetrisGame
-) => {
-  const userName = `user:${userNumber}`;
-  console.log(userName);
+function onKeyPressUp(this: Socket) {
+  GameManager.moveMino(this.id, 'UP');
+}
 
-  client.on('pressUpKey', (data) => {
-    sendMessageToUser(client, data);
-    if (gameMap.moveMino('UP')) {
-      console.log('위로 이동합니다.');
-      return sendMessageToUser(client, '블럭을 이동시켰습니다.');
-    }
+function onKeyPressDown(this: Socket) {
+  GameManager.moveMino(this.id, 'DOWN');
+}
 
-    return sendMessageToUser(client, '블럭을 이동시킬 수 없습니다.');
-  });
+function onKeyPressLeft(this: Socket) {
+  GameManager.moveMino(this.id, 'LEFT');
+}
 
-  client.on('pressDownKey', (data) => {
-    sendMessageToUser(client, data);
-    const moveSuccess = gameMap.moveMino('DOWN');
-    if (moveSuccess) {
-      console.log('아래로 이동합니다.');
-      return sendMessageToUser(client, '블럭을 이동시켰습니다.');
-    }
-    gameMap.settleDownMino();
-    return sendMessageToUser(client, '블럭을 이동시킬 수 없습니다.');
-  });
+function onKeyPressRight(this: Socket) {
+  GameManager.moveMino(this.id, 'RIGHT');
+}
 
-  client.on('pressLeftKey', (data) => {
-    sendMessageToUser(client, data);
-    if (gameMap.moveMino('LEFT')) {
-      console.log('왼쪽으로 이동합니다.');
-      return sendMessageToUser(client, '블럭을 이동시켰습니다.');
-    }
+function onKeyPressLeftRotate(this: Socket) {
+  GameManager.rotateMino(this.id, 'COUNTER_CLOCK_WISE');
+}
 
-    return sendMessageToUser(client, '블럭을 이동시킬 수 없습니다.');
-  });
+function onKeyPressRightRotate(this: Socket) {
+  GameManager.rotateMino(this.id, 'CLOCK');
+}
 
-  client.on('pressRightKey', (data) => {
-    sendMessageToUser(client, data);
-    if (gameMap.moveMino('RIGHT')) {
-      console.log('오른쪽으로 이동합니다.');
-      return sendMessageToUser(client, '블럭을 이동시켰습니다.');
-    }
+function onKeyPressEscape(this: Socket) {
+  MessageManager.sendMessageToUser(this, '이스케이프 입력');
+}
 
-    return sendMessageToUser(client, '블럭을 이동시킬 수 없습니다.');
-  });
+export function attachKeyPressEvents(client: Socket) {
+  client.on('pressUpKey', onKeyPressUp);
+  client.on('pressDownKey', onKeyPressDown);
+  client.on('pressLeftKey', onKeyPressLeft);
+  client.on('pressRightKey', onKeyPressRight);
+  client.on('pressLeftRotateKey', onKeyPressLeftRotate);
+  client.on('pressRightRotateKey', onKeyPressRightRotate);
+  client.on('pressEscapeKey', onKeyPressEscape);
+}
 
-  client.on('pressEscapeKey', (data) => {
-    sendMessageToUser(client, data);
-  });
-
-  client.on('pressLeftRotateKey', (data) => {
-    sendMessageToUser(client, data);
-    if (gameMap.rotateMino('COUNTER_CLOCK_WISE')) {
-      console.log('반시계 방향으로 회전합니다.');
-      return sendMessageToUser(client, '블럭을 회전시켰습니다.');
-    }
-    console.log('회전에 실패했습니다.');
-    return sendMessageToUser(client, '회전에 실패했습니다.');
-  });
-
-  client.on('pressRightRotateKey', (data) => {
-    sendMessageToUser(client, data);
-    if (gameMap.rotateMino('CLOCK')) {
-      console.log('시계 방향으로 회전합니다.');
-      return sendMessageToUser(client, '블럭을 회전시켰습니다.');
-    }
-    console.log('회전에 실패했습니다.');
-    return sendMessageToUser(client, '회전에 실패했습니다.');
-  });
-};
-
-export const removeAllKeyPressEvents = (client: Socket) => {
+export function removeAllKeyPressEvents(client: Socket) {
   client.removeAllListeners('pressUpKey');
   client.removeAllListeners('pressDownKey');
   client.removeAllListeners('pressLeftKey');
   client.removeAllListeners('pressRightKey');
-  client.removeAllListeners('pressEscapeKey');
   client.removeAllListeners('pressLeftRotateKey');
   client.removeAllListeners('pressRightRotateKey');
-};
+  client.removeAllListeners('pressEscapeKey');
+}

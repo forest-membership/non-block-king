@@ -1,26 +1,37 @@
-import { Socket } from 'socket.io';
-import { sendMessageToUser } from '@/sockets/messageManager';
-import roomManager from '../roomManager';
+import { SocketId } from 'socket.io-adapter';
+import GameService from '@/service/game';
+import { KeyMap } from '@/types/key';
 
-// TODO: GameManager 가 유저가 입장 요청을 보냈을 때 적절한 방을 찾아서 매칭해주도록 한다.
-const gameManager = (socket: Socket, userNumber: number) => {
-  const userName = `user:${userNumber}`;
-  console.log(userName);
+// TODO: 클라이언트는 게임 맵 데이터를 반환받아서 화면에 렌더링합니다.
 
-  socket.on('joinPvP', () => {
-    roomManager(socket, userNumber, 'PvP');
-    sendMessageToUser(socket, 'PvP에 입장');
-  });
+export function initGameMap(socketId: SocketId) {
+  GameService.initGame(socketId);
+}
 
-  socket.on('joinPvF', () => {
-    roomManager(socket, userNumber, 'PvF');
-    sendMessageToUser(socket, 'PvF에 입장');
-  });
+export function moveMino(socketId: SocketId, key: keyof typeof KeyMap) {
+  if (key === 'CLOCK' || key === 'COUNTER_CLOCK_WISE') return;
 
-  socket.on('joinPvE', () => {
-    roomManager(socket, userNumber, 'PvE');
-    sendMessageToUser(socket, 'PvE에 입장');
-  });
-};
+  const success = GameService.moveMino(socketId, key);
+  if (!success && key === 'DOWN') {
+    GameService.settleDownMino(socketId);
+  }
 
-export default gameManager;
+  /** ⚠️ 테스트용 로그 - 추후 삭제 예정 */
+  if (!success) {
+    console.log('이동 실패');
+    if (key === 'DOWN') {
+      console.log('미노 고정됨');
+    }
+  }
+}
+
+export function rotateMino(socketId: SocketId, key: keyof typeof KeyMap) {
+  if (key !== 'CLOCK' && key !== 'COUNTER_CLOCK_WISE') return;
+
+  const success = GameService.rotateMino(socketId, key);
+
+  /** ⚠️ 테스트용 로그 - 추후 삭제 예정 */
+  if (!success) {
+    console.log('회전 실패');
+  }
+}
