@@ -1,6 +1,6 @@
 import Mino from '@/service/minos/mino';
 import Position from '@/types/position';
-import STATUS from '@/service/status';
+import STATUS from '@/service/constants';
 
 class TMino extends Mino {
   color: string;
