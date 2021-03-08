@@ -1,11 +1,10 @@
-export const sendMessageToUser = (
-  serverSocket: any,
-  userName: string,
-  message: string
-) => serverSocket.to(userName).emit('message', message);
+import io, { Socket } from 'socket.io';
+
+export const sendMessageToUser = (socket: Socket, message: string) =>
+  socket.emit('message', message);
 
 export const sendGameMapToUser = (
-  serverSocket: any,
+  serverSocket: io.Server,
   userName: string,
   map: number[][]
 ) => serverSocket.to(userName).emit('gameMap', map);

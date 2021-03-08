@@ -1,4 +1,4 @@
-import { Service } from 'typedi';
+import { Service, Inject } from 'typedi';
 import RedisClient from '@/databases/redis';
 import adjectives from '@/service/nickname/adjective';
 import nouns from '@/service/nickname/noun';

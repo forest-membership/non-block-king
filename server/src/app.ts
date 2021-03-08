@@ -2,15 +2,14 @@ import 'reflect-metadata';
 import express from 'express';
 import routers from '@/routers';
 import initSocket from '@/sockets';
-import socketIo from 'socket.io';
+import http from 'http';
 
 import { expressMiddleware, thirdPartyMiddleware } from '@/middlewares/express';
 
 class App {
   private app: express.Application;
   private port: number;
-  private server: any;
-  public io!: socketIo.Server;
+  private server!: http.Server;
 
   constructor(port: number) {
     this.app = express();
@@ -23,7 +22,7 @@ class App {
       console.log(`App listening on the port ${this.port}`);
     });
 
-    this.io = initSocket(this.server);
+    initSocket(this.server);
   }
 
   private initalizeMiddlewares() {
