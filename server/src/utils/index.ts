@@ -27,3 +27,16 @@ export const removeDuplicateFromArray = <T>(arr: T[]): T[] => {
 export const createRandomNumber = (limit: number): number => {
   return Math.floor(Math.random() * limit);
 };
+
+/**
+ * 랜덤 문자열을 생성합니다.
+ * @param length 랜덤 문자열 길이
+ */
+export const generateRandomString = (length: number, str: string): string => {
+  str += Math.random().toString(36).substr(2, length);
+  if (str.length > length) {
+    return str.slice(0, length);
+  }
+
+  return generateRandomString(length, str);
+};

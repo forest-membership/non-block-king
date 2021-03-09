@@ -2,41 +2,23 @@ import React from 'react';
 import * as S from './style';
 
 interface IPvPViewTemplateProps {
-  userInfoHeaer: React.ReactNode;
-  scoreBoard: React.ReactNode;
-  minoPreviewList: React.ReactNode;
-  tetrisBoard: React.ReactNode;
+  mySandbox: React.ReactNode;
+  opponentSandbox: React.ReactNode;
   controlButton: React.ReactNode;
   redirectButton: React.ReactNode;
 }
 
 function PvPViewTemplate({
-  userInfoHeaer,
-  scoreBoard,
-  minoPreviewList,
-  tetrisBoard,
+  mySandbox,
+  opponentSandbox,
   controlButton,
   redirectButton,
 }: IPvPViewTemplateProps): JSX.Element {
   return (
     <S.Template>
       <S.PlaygroundWrapper>
-        <S.SandboxWrapper>
-          <S.MetaWrapper>
-            {userInfoHeaer} {scoreBoard}
-          </S.MetaWrapper>
-          <S.GameWrapper>
-            {minoPreviewList} {tetrisBoard}
-          </S.GameWrapper>
-        </S.SandboxWrapper>
-        <S.SandboxWrapper>
-          <S.MetaWrapper>
-            {userInfoHeaer} {scoreBoard}
-          </S.MetaWrapper>
-          <S.GameWrapper>
-            {minoPreviewList} {tetrisBoard}
-          </S.GameWrapper>
-        </S.SandboxWrapper>
+        <S.SandboxWrapper>{mySandbox}</S.SandboxWrapper>
+        <S.SandboxWrapper>{opponentSandbox}</S.SandboxWrapper>
       </S.PlaygroundWrapper>
       <S.ControlWrapper>
         {controlButton}

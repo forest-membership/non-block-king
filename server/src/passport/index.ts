@@ -3,7 +3,7 @@ import * as jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
 import passport from 'passport';
-import { IUser } from '@/types/IUser';
+// import { IUser } from '@/types/IUser'; TODO: IUser 정의하기
 dotenv.config();
 
 export const isAuthenticate = (
@@ -22,7 +22,7 @@ export const isAuthenticate = (
   })(req, res, next);
 };
 
-export const createJwtToken = (user: IUser): string => {
+export const createJwtToken = (user: any): string => {
   if (typeof process.env.PRIVATE_TOKEN_KEY !== 'string') {
     throw new Error('토큰의 환경 값이 없습니다.');
   }
