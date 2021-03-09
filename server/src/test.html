@@ -32,19 +32,19 @@
     document.addEventListener('keydown', (keyboardEvent) => {
       console.log(keyboardEvent.key.toLowerCase());
       if (keyboardEvent.key === 'ArrowDown') {
-        socket.emit('pressDownKey', 'down');
+        socket.emit('pressDownKey');
       }
       if (keyboardEvent.key === 'ArrowUp') {
-        socket.emit('pressUpKey', 'up');
+        socket.emit('pressUpKey');
       }
       if (keyboardEvent.key === 'ArrowLeft') {
-        socket.emit('pressLeftKey', 'left');
+        socket.emit('pressLeftKey');
       }
       if (keyboardEvent.key === 'ArrowRight') {
-        socket.emit('pressRightKey', 'right');
+        socket.emit('pressRightKey');
       }
       if (keyboardEvent.key === 'Escape') {
-        socket.emit('pressEscapeKey', 'escape');
+        socket.emit('pressEscapeKey');
       }
       if (keyboardEvent.key === 'j') {
         socket.emit('joinPvP', 'join');
@@ -59,13 +59,13 @@
         socket.emit('quit', 'leave');
       }
       if (keyboardEvent.key === 'Escape') {
-        socket.emit('pressEscapeKey', 'Escape');
+        socket.emit('pressEscapeKey');
       }
       if (keyboardEvent.key === 'z') {
-        socket.emit('pressLeftRotateKey', 'z');
+        socket.emit('pressLeftRotateKey');
       }
       if (keyboardEvent.key === 'x') {
-        socket.emit('pressRightRotateKey', 'x');
+        socket.emit('pressRightRotateKey');
       }
       if (keyboardEvent.key === 't') {
         socket.emit('test', 't');

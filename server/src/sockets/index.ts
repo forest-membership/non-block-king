@@ -1,31 +1,12 @@
+import http from 'http';
 import io, { Socket } from 'socket.io';
-// import keyPressEvent from '@/sockets/gameController';
-import gameManager from '@/sockets/gameManager';
+import * as ModeManager from '@/sockets/modeManager';
 
-// TODO: 클라이언트에서 닉네임 보내면 해싱해서 사용하기
-let userNumber = 0;
-
-const initSocket = (server: any) => {
+export default function initSocket(server: http.Server) {
   const serverSocket: io.Server = new io.Server(server);
-  serverSocket.on('connect', (socket: Socket) => {
-    console.log(`클라이언트 user${userNumber} 님이 연결되었습니다.`);
-    console.log(`클라이언트의 소켓 ID는 ${socket.id} 입니다.`);
 
-    socket.join(`user:${userNumber}`);
-
-    gameManager(serverSocket, socket, userNumber);
-
-    socket.on('message', (data: string) => {
-      console.log('message가 들어왔습니다. : ', data);
-
-      // 메시지를 돌려준다.
-      serverSocket.emit('message', data);
-    });
-
-    userNumber++;
+  serverSocket.on('connection', (client: Socket) => {
+    console.log(`${client.id} 님이 연결되었습니다.`);
+    ModeManager.attachJoinEvents(client);
   });
-
-  return serverSocket;
-};
-
-export default initSocket;
+}

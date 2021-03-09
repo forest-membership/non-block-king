@@ -1,5 +1,5 @@
 import getNextMinos from '@/service/minos';
-import STATUS from '@/service/status';
+import STATUS from '@/service/constants';
 import Mino from '@/service/minos/mino';
 import { create2DArray } from '@/utils';
 
@@ -185,6 +185,7 @@ class TetrisGame {
     this.drawMinoToMap();
     this.activeMino = this.getNextMino();
     this.checkIfLineIsFullAndGiveScore();
+
     return true;
   }
 
@@ -211,6 +212,9 @@ class TetrisGame {
     }
   }
 
+  /**
+   * @deprecated 테스트용 메서드
+   */
   print() {
     const activeMinoPivot = this.activeMino.pivot;
     const activeMinoArea = this.activeMino.area;

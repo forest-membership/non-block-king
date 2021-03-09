@@ -3,5 +3,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const app = new App(Number(process.env.PORT || 3000));
+const port = Number(process.env.PORT || 3000);
+const app = new App(port);
+
 app.listen();

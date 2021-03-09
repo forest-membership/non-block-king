@@ -2,7 +2,7 @@
 
 import passportOfJwt from 'passport-jwt';
 import dotenv from 'dotenv';
-import { IUser } from '@/types/IUser';
+// import { IUser } from '@/types/IUser'; TODO: IUser 정의하기
 dotenv.config();
 
 const { ExtractJwt, Strategy: JWTStrategy } = passportOfJwt;
@@ -12,7 +12,7 @@ const JWTConfig: passportOfJwt.StrategyOptions = {
   secretOrKey: process.env.PRIVATE_TOKEN_KEY,
 };
 
-const JWTVerify = async (jwtPayload: IUser, done: any) => {
+const JWTVerify = async (jwtPayload: any, done: any) => {
   try {
     // TODO : redis에서 nickname에 해당하는 user를 찾아야 한다.
     const user = {};

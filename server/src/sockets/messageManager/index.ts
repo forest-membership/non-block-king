@@ -1,26 +1,32 @@
 import Mino from '@/service/minos/mino';
+import io, { Socket } from 'socket.io';
 
-// TODO : 여기의 로직들은 나중에 user에게만 줄 것이 아니라 방의 구성원 모두에게 주도록 해야 한다.
-export const sendMessageToUser = (
-  serverSocket: any,
-  userName: string,
-  message: string
-) => serverSocket.to(userName).emit('message', message);
+export function sendMessageToUser(client: Socket, message: string) {
+  client.emit('message', message);
+}
 
-export const sendGameMapToUser = (
-  serverSocket: any,
+export function sendGameMapToUser(
+  serverSocket: io.Server,
   userName: string,
   map: number[][]
-) => serverSocket.to(userName).emit('gameMap', map);
+) {
+  serverSocket.to(userName).emit('gameMap', map);
+}
 
-export const sendMinoSetToUser = (
+// TODO : 게임 시작 시 preview Mino를 보내기 위한 함수, 아래 함수 묶음으로 대체할 수 있을 법하다.
+export function sendMinoSetToUser(
   serverSocket: any,
   userName: string,
   minos: Mino[]
-) => serverSocket.to(userName).emit('', minos);
+) {
+  serverSocket.to(userName).emit('', minos);
+}
 
-export const sendMinoToUser = (
+// TODO : 매번 다음 preview Mino를 보내주기 위한 함수
+export function sendMinoToUser(
   serverSocket: any,
   userName: string,
   mino: Mino
-) => serverSocket.to(userName).emit('', mino);
+) {
+  serverSocket.to(userName).emit('', mino);
+}

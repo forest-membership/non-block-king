@@ -1,13 +1,11 @@
 import React, { useCallback } from 'react';
 import Canvas from '../../atoms/Canvas';
 import { BLOCK_SIZE, CANVAS_ROWS, CANVAS_COLS } from './constants';
+import { MinoColor } from '../../../utils/constants';
+import { IMino } from '../../../@types';
 import * as S from './style';
 
 type IndexType = number;
-
-interface IMino {
-  blockArea: number[][];
-}
 
 export interface IMinoPreviewBlock {
   mino: IMino;
@@ -16,7 +14,9 @@ export interface IMinoPreviewBlock {
 function MinoPreviewBlock({ mino }: IMinoPreviewBlock): JSX.Element {
   const drawMino = useCallback(
     (context: CanvasRenderingContext2D) => {
-      context.fillStyle = 'yellow'; // TODO: 미노 식별자로 색상 구분하기
+      const blockType = mino.blockArea[0][0];
+
+      context.fillStyle = MinoColor[blockType];
       context.scale(BLOCK_SIZE, BLOCK_SIZE);
 
       mino.blockArea.forEach((row: number[], r: IndexType) => {
