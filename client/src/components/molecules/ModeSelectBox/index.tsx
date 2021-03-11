@@ -4,13 +4,19 @@ import * as S from './style';
 
 export interface IModeSelectBoxProps {
   /** 모드 선택시 호출되는 콜백 함수 */
-  onSelect: (mode: string) => void;
+  onSelect: (mode: 'pvp' | 'pve' | 'pvf') => void;
+}
+
+function isMode(mode: string): mode is 'pvp' | 'pve' | 'pvf' {
+  return ['pvp', 'pve', 'pvf'].some((pivot: string) => pivot === mode);
 }
 
 function ModeSelectBox({ onSelect }: IModeSelectBoxProps): JSX.Element {
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const mode = (e.target as HTMLButtonElement).id;
-    onSelect(mode);
+    if (isMode(mode)) {
+      onSelect(mode);
+    }
   };
 
   return (
