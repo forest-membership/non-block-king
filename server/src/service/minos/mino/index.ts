@@ -1,5 +1,5 @@
 import Block from '@/service/minos/block';
-import STATUS from '@/service/status';
+import STATUS from '@/service/constants';
 
 const TETRA = 4;
 
@@ -54,7 +54,7 @@ class Mino {
   }
 
   rotateLeft() {
-    let newArea: number[][] = [[], [], [], []];
+    const newArea: number[][] = [[], [], [], []];
     for (let i = 0; i < TETRA; i++) {
       for (let j = 0; j < TETRA; j++) {
         newArea[TETRA - j - 1][i] = this.blockArea[i][j];
@@ -64,7 +64,7 @@ class Mino {
   }
 
   rotateRight() {
-    let newArea: number[][] = [[], [], [], []];
+    const newArea: number[][] = [[], [], [], []];
     for (let i = 0; i < TETRA; i++) {
       for (let j = 0; j < TETRA; j++) {
         newArea[j][TETRA - i - 1] = this.blockArea[i][j];
