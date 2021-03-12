@@ -1,37 +1,45 @@
-import { SocketId } from 'socket.io-adapter';
+import { Socket } from 'socket.io';
+import * as MessageManager from '@/sockets/messageManager';
 import GameService from '@/service/game';
+import TetrisGame from '@/service/map';
 import { KeyMap } from '@/types/key';
 
-// TODO: 클라이언트는 게임 맵 데이터를 반환받아서 화면에 렌더링합니다.
-
-export function initGameMap(socketId: SocketId) {
-  GameService.initGame(socketId);
+function gameLoopFactory(socket: Socket) {
+  return function gameLoop(game: TetrisGame) {
+    game.moveMino('DOWN');
+    MessageManager.sendGameMapToClient(socket, game.composedGameMap);
+  };
 }
 
-export function moveMino(socketId: SocketId, key: keyof typeof KeyMap) {
+export function initGameMap(socket: Socket) {
+  GameService.initGame(socket);
+}
+
+export function startGame(socket: Socket) {
+  GameService.startGame(socket.id, gameLoopFactory(socket));
+  MessageManager.sendMessageToClient(socket, 'game:start', '🔥 게임시작! 🔥');
+}
+
+export function moveMino(socket: Socket, key: keyof typeof KeyMap) {
   if (key === 'CLOCK' || key === 'COUNTER_CLOCK_WISE') return;
 
-  const success = GameService.moveMino(socketId, key);
-  if (!success && key === 'DOWN') {
-    GameService.settleDownMino(socketId);
+  const gameMap = GameService.moveMino(socket.id, key);
+  if (gameMap === undefined) {
+    console.error('예기치 못한 에러');
+    return;
   }
 
-  /** ⚠️ 테스트용 로그 - 추후 삭제 예정 */
-  if (!success) {
-    console.log('이동 실패');
-    if (key === 'DOWN') {
-      console.log('미노 고정됨');
-    }
-  }
+  MessageManager.sendGameMapToClient(socket, gameMap);
 }
 
-export function rotateMino(socketId: SocketId, key: keyof typeof KeyMap) {
+export function rotateMino(socket: Socket, key: keyof typeof KeyMap) {
   if (key !== 'CLOCK' && key !== 'COUNTER_CLOCK_WISE') return;
 
-  const success = GameService.rotateMino(socketId, key);
-
-  /** ⚠️ 테스트용 로그 - 추후 삭제 예정 */
-  if (!success) {
-    console.log('회전 실패');
+  const gameMap = GameService.rotateMino(socket.id, key);
+  if (gameMap === undefined) {
+    console.error('예기치 못한 에러');
+    return;
   }
+
+  MessageManager.sendGameMapToClient(socket, gameMap);
 }
