@@ -13,6 +13,33 @@ export const create2DArray = <T>(
 };
 
 /**
+ * 1차원 배열을 생성합니다.
+ * @param length 배열의 길이
+ * @param initValue 초기값
+ */
+export const create1DArray = <T>(length: number, initValue: T): T[] => {
+  return Array(length).fill(initValue);
+};
+
+/**
+ * 2차원 배열을 복사한 새로운 배열을 반환합니다.
+ * @param original 원본 2차원 배열
+ */
+export const copy2DArray = <T>(original: T[][]): T[][] => {
+  const width = original[0].length;
+  const height = original.length;
+  const copied = create2DArray<T | undefined>(height, width, undefined);
+
+  for (let h = 0; h < height; h++) {
+    for (let w = 0; w < width; w++) {
+      copied[h][w] = original[h][w];
+    }
+  }
+
+  return copied as T[][];
+};
+
+/**
  * 배열에서 중복된 요소들을 제거합니다.
  * @param arr 검사할 배열
  */
