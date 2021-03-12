@@ -1,5 +1,6 @@
 import Block from '@/service/minos/block';
 import STATUS from '@/service/constants';
+import { create2DArray } from '@/utils/index';
 
 const TETRA = 4;
 
@@ -8,11 +9,11 @@ class Mino {
   protected pivotReferenceBlock: Block;
 
   constructor() {
-    this.blockArea = this.initBlockArea();
+    this.blockArea = create2DArray<STATUS>(TETRA, TETRA, STATUS.VOID);
     this.pivotReferenceBlock = new Block();
   }
 
-  setpivotReference(block: Block) {
+  public setpivotReference(block: Block) {
     this.pivotReferenceBlock = block;
   }
 
@@ -24,53 +25,44 @@ class Mino {
     return this.pivotReferenceBlock;
   }
 
-  private initBlockArea() {
-    return new Array(TETRA)
-      .fill(0)
-      .map((el) => [STATUS.VOID, STATUS.VOID, STATUS.VOID, STATUS.VOID]);
-  }
-
-  moveRight() {
-    if (!isNaN(this.pivotReferenceBlock.xPos)) {
-      this.pivotReferenceBlock.xPos++;
+  public move(direction: 'UP' | 'DOWN' | 'RIGHT' | 'LEFT' | 'NONE') {
+    switch (direction) {
+      case 'UP':
+        this.pivotReferenceBlock.yPos--;
+        break;
+      case 'DOWN':
+        this.pivotReferenceBlock.yPos++;
+        break;
+      case 'RIGHT':
+        this.pivotReferenceBlock.xPos++;
+        break;
+      case 'LEFT':
+        this.pivotReferenceBlock.xPos--;
+        break;
+      default:
+        break;
     }
   }
 
-  moveLeft() {
-    if (!isNaN(this.pivotReferenceBlock.xPos)) {
-      this.pivotReferenceBlock.xPos--;
-    }
-  }
-
-  moveDown() {
-    if (!isNaN(this.pivotReferenceBlock.yPos)) {
-      this.pivotReferenceBlock.yPos++;
-    }
-  }
-  moveUp() {
-    if (!isNaN(this.pivotReferenceBlock.xPos)) {
-      this.pivotReferenceBlock.yPos--;
-    }
-  }
-
-  rotateLeft() {
-    const newArea: number[][] = [[], [], [], []];
-    for (let i = 0; i < TETRA; i++) {
-      for (let j = 0; j < TETRA; j++) {
-        newArea[TETRA - j - 1][i] = this.blockArea[i][j];
+  public rotate(direction: 'CLOCK' | 'COUNTER_CLOCK_WISE') {
+    /** TODO: 경수님한테 회전 동작 제대로 되는지 물어보기 */
+    if (direction === 'CLOCK') {
+      const newArea: number[][] = [[], [], [], []];
+      for (let i = 0; i < TETRA; i++) {
+        for (let j = 0; j < TETRA; j++) {
+          newArea[j][TETRA - i - 1] = this.blockArea[i][j];
+        }
       }
-    }
-    this.blockArea = newArea;
-  }
-
-  rotateRight() {
-    const newArea: number[][] = [[], [], [], []];
-    for (let i = 0; i < TETRA; i++) {
-      for (let j = 0; j < TETRA; j++) {
-        newArea[j][TETRA - i - 1] = this.blockArea[i][j];
+      this.blockArea = newArea;
+    } else {
+      const newArea: number[][] = [[], [], [], []];
+      for (let i = 0; i < TETRA; i++) {
+        for (let j = 0; j < TETRA; j++) {
+          newArea[TETRA - j - 1][i] = this.blockArea[i][j];
+        }
       }
+      this.blockArea = newArea;
     }
-    this.blockArea = newArea;
   }
 }
 

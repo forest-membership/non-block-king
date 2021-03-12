@@ -1,7 +1,7 @@
 import getNextMinos from '@/service/minos';
 import STATUS from '@/service/constants';
 import Mino from '@/service/minos/mino';
-import { create2DArray } from '@/utils';
+import { create1DArray, create2DArray, copy2DArray } from '@/utils';
 
 const MINO_HEIGHT = 4;
 const MINO_WIDTH = 4;
@@ -9,249 +9,163 @@ const MINO_WIDTH = 4;
 const MAP_WIDTH = 10;
 const MAP_HEIGHT = 20 + MINO_HEIGHT;
 
-const PREVIEW_NUM = 3;
+type ArrowType = 'NONE' | 'UP' | 'DOWN' | 'LEFT' | 'RIGHT';
+type RotateType = 'CLOCK' | 'COUNTER_CLOCK_WISE';
+
+const OFFSET = {
+  NONE: { dy: 0, dx: 0 },
+  UP: { dy: -1, dx: 0 },
+  DOWN: { dy: 1, dx: 0 },
+  LEFT: { dy: 0, dx: -1 },
+  RIGHT: { dy: 0, dx: 1 },
+};
+
+function isMovable(
+  direction: ArrowType,
+  gameMap: number[][],
+  targetMino: Mino
+) {
+  const { dy, dx } = OFFSET[direction];
+  const { pivot: activeMinoPivot, area: activeMinoArea } = targetMino;
+  const pivotY = activeMinoPivot.yPos + dy;
+  const pivotX = activeMinoPivot.xPos + dx;
+
+  for (let y = pivotY; y < pivotY + MINO_HEIGHT; y++) {
+    for (let x = pivotX; x < pivotX + MINO_WIDTH; x++) {
+      const isTarget = activeMinoArea[y - pivotY][x - pivotX];
+
+      if (isTarget) {
+        if (MAP_HEIGHT <= y || MAP_WIDTH <= x || y < 0 || x < 0) {
+          return false;
+        }
+
+        const activeBlockOfMap = gameMap[y][x];
+        if (activeBlockOfMap) {
+          return false;
+        }
+      }
+    }
+  }
+
+  return true;
+}
+
+function isRotatable(gameMap: number[][], targetMino: Mino) {
+  return isMovable('NONE', gameMap, targetMino);
+}
 
 class TetrisGame {
   private gameMap: number[][];
-  public gamePoint: number;
+  private gamePoint: number;
   private subMinoSet: Mino[];
   private activeMinoSet: Mino[];
   private activeMino: Mino;
+  public shouldUpdateMinoPreviews = false;
 
   constructor() {
     this.gameMap = create2DArray<STATUS>(MAP_HEIGHT, MAP_WIDTH, STATUS.VOID);
     this.gamePoint = 0;
     this.activeMinoSet = getNextMinos();
     this.subMinoSet = getNextMinos();
-    this.activeMino = this.getNextMino();
+    this.activeMino = this.getNextActiveMino();
   }
 
-  public get offerUserMap(): number[][] {
-    return this.gameMap;
+  public get composedGameMap() {
+    /** FIXME: slice 할 필요 없이 바로 조회 가능하도록 변경해주세요 */
+    // return this.composeActiveMinoAndMap();
+
+    return this.composeActiveMinoAndMap().slice(MINO_HEIGHT);
   }
 
-  previewMinoInit() {
-    const newArr = [];
-    for (let i = PREVIEW_NUM; i < this.activeMinoSet.length; i++) {
-      newArr.push(this.activeMinoSet[i]);
+  public get previewMinos() {
+    return this.activeMinoSet.slice(3);
+  }
+
+  public get score() {
+    return this.gamePoint;
+  }
+
+  public getNextActiveMino(): Mino {
+    if (!this.subMinoSet.length) {
+      this.subMinoSet = getNextMinos();
     }
-    return newArr;
+
+    const activeMino = this.activeMinoSet.shift() as Mino;
+    this.activeMinoSet.push(this.subMinoSet.shift() as Mino);
+
+    return activeMino;
   }
 
-  previewMino() {
-    return this.activeMinoSet[PREVIEW_NUM];
+  private isLineFull(line: STATUS[]) {
+    return line.every((isFull: STATUS) => isFull);
   }
 
-  getNextMino(): Mino {
-    if (!this.subMinoSet.length) this.subMinoSet = getNextMinos();
-
-    this.activeMinoSet = [this.subMinoSet.pop() as Mino, ...this.activeMinoSet];
-    return this.activeMinoSet.pop() as Mino;
-  }
-
-  getWeight(ARROW: string): any {
-    switch (ARROW) {
-      case 'NONE':
-        return { Y_WEIGHT: 0, X_WEIGHT: 0 };
-      case 'UP':
-        return { Y_WEIGHT: -1, X_WEIGHT: 0 };
-      case 'DOWN':
-        return { Y_WEIGHT: +1, X_WEIGHT: 0 };
-      case 'RIGHT':
-        return { Y_WEIGHT: 0, X_WEIGHT: +1 };
-      case 'LEFT':
-        return { Y_WEIGHT: 0, X_WEIGHT: -1 };
+  private pullPreviousLine(inspectStartY: number) {
+    for (let y = inspectStartY; y >= 0; y--) {
+      this.gameMap[y] = this.gameMap[y - 1];
     }
+    this.gameMap[0] = create1DArray<STATUS>(MAP_WIDTH, STATUS.VOID);
   }
 
-  isMovable(ARROW: string): boolean {
-    const { Y_WEIGHT, X_WEIGHT } = this.getWeight(ARROW);
-    const activeMinoPivot = this.activeMino.pivot;
-    const activeMinoArea = this.activeMino.area;
-    const pivotY = activeMinoPivot.yPos + Y_WEIGHT;
-    const pivotX = activeMinoPivot.xPos + X_WEIGHT;
-
-    for (let i = pivotY; i < pivotY + MINO_HEIGHT; i++) {
-      for (let j = pivotX; j < pivotX + MINO_WIDTH; j++) {
-        const isTarget = activeMinoArea[i - pivotY][j - pivotX];
-
-        if (isTarget) {
-          if (MAP_HEIGHT <= i || MAP_WIDTH <= j || i < 0 || j < 0) {
-            return false;
-          }
-
-          const activeBlockOfMap = this.gameMap[i][j];
-          if (activeBlockOfMap) {
-            return false;
-          }
-        }
+  private checkLineFullAndIncreaseScore() {
+    for (let y = MAP_HEIGHT - 1; y >= 0; y--) {
+      if (this.isLineFull(this.gameMap[y])) {
+        this.pullPreviousLine(y);
+        this.gamePoint++;
+        y++;
       }
     }
-    return true;
   }
 
-  isRotatable() {
-    const activeMinoPivot = this.activeMino.pivot;
-    const activeMinoArea = this.activeMino.area;
-    const pivotY = activeMinoPivot.yPos;
-    const pivotX = activeMinoPivot.xPos;
+  private settleDownActiveMino() {
+    const composedGameMap = this.composeActiveMinoAndMap();
 
-    for (let i = pivotY; i < pivotY + MINO_HEIGHT; i++) {
-      for (let j = pivotX; j < pivotX + MINO_WIDTH; j++) {
-        const isTarget = activeMinoArea[i - pivotY][j - pivotX];
+    this.gameMap = composedGameMap;
+    this.activeMino = this.getNextActiveMino();
+    this.checkLineFullAndIncreaseScore();
+  }
 
-        if (isTarget) {
-          if (MAP_HEIGHT <= i || MAP_WIDTH <= j || i < 0 || j < 0) {
-            return false;
-          }
-
-          const activeBlockOfMap = this.gameMap[i][j];
-          if (activeBlockOfMap) {
-            return false;
-          }
-        }
-      }
+  public moveMino(direction: ArrowType) {
+    if (isMovable(direction, this.gameMap, this.activeMino)) {
+      this.activeMino.move(direction);
+    } else if (direction === 'DOWN') {
+      this.settleDownActiveMino();
+      this.shouldUpdateMinoPreviews = true;
     }
-    return true;
   }
 
-  rotateMino(DIRECTION: string): boolean {
-    switch (DIRECTION) {
+  public rotateMino(direction: RotateType) {
+    /** TODO: 가능하다면 회전을 2번 할 필요가 없도록 변경해주세요 */
+    switch (direction) {
       case 'CLOCK':
-        this.activeMino.rotateRight();
-        if (!this.isRotatable()) {
-          this.activeMino.rotateLeft();
-          return false;
+        this.activeMino.rotate('CLOCK');
+        if (!isRotatable(this.gameMap, this.activeMino)) {
+          this.activeMino.rotate('COUNTER_CLOCK_WISE');
         }
         break;
       case 'COUNTER_CLOCK_WISE':
-        this.activeMino.rotateLeft();
-        if (!this.isRotatable()) {
-          this.activeMino.rotateRight();
-          return false;
+        this.activeMino.rotate('COUNTER_CLOCK_WISE');
+        if (!isRotatable(this.gameMap, this.activeMino)) {
+          this.activeMino.rotate('CLOCK');
         }
         break;
     }
-    this.print();
-
-    return true;
   }
 
-  moveMino(ARROW: string): boolean {
-    if (!this.isMovable(ARROW)) {
-      return false;
-    }
+  private composeActiveMinoAndMap() {
+    const copiedGameMap = copy2DArray(this.gameMap);
+    const { pivot: activeMinoPivot, area: activeMinoArea } = this.activeMino;
+    const { yPos: pivotY, xPos: pivotX } = activeMinoPivot;
 
-    switch (ARROW) {
-      case 'UP':
-        this.activeMino.moveUp();
-        break;
-      case 'DOWN':
-        this.activeMino.moveDown();
-        break;
-      case 'RIGHT':
-        this.activeMino.moveRight();
-        break;
-      case 'LEFT':
-        this.activeMino.moveLeft();
-        break;
-    }
-    this.print();
-
-    return true;
-  }
-
-  drawMinoToMap() {
-    const activeMinoPivot = this.activeMino.pivot;
-    const activeMinoArea = this.activeMino.area;
-    const pivotY = activeMinoPivot.yPos;
-    const pivotX = activeMinoPivot.xPos;
-
-    for (let i = pivotY; i < pivotY + MINO_HEIGHT; i++) {
-      for (let j = pivotX; j < pivotX + MINO_WIDTH; j++) {
-        if (!this.gameMap[i]) {
-          continue;
+    for (let y = pivotY; y < pivotY + MINO_HEIGHT; y++) {
+      for (let x = pivotX; x < pivotX + MINO_WIDTH; x++) {
+        if (activeMinoArea[y - pivotY][x - pivotX] !== STATUS.VOID) {
+          copiedGameMap[y][x] = activeMinoArea[y - pivotY][x - pivotX];
         }
-
-        if (this.gameMap[i][j]) continue;
-        if (j >= MAP_WIDTH) continue;
-
-        this.gameMap[i][j] = activeMinoArea[i - pivotY][j - pivotX];
-      }
-    }
-  }
-
-  settleDownMino(): boolean {
-    this.drawMinoToMap();
-    this.activeMino = this.getNextMino();
-    this.checkIfLineIsFullAndGiveScore();
-
-    return true;
-  }
-
-  pullNextLine(activeY: number) {
-    for (let i = activeY; i >= 0; i--) {
-      this.gameMap[i] = this.gameMap[i - 1];
-    }
-    this.gameMap[0] = new Array(MAP_WIDTH).fill(STATUS.VOID);
-  }
-
-  isLineFull(line: Array<STATUS>): boolean {
-    return line.every((cell) => cell);
-  }
-
-  checkIfLineIsFullAndGiveScore(activeY = MAP_HEIGHT - 1) {
-    console.log('검사 해볼까!');
-    for (let i = activeY; i >= 0; i--) {
-      if (this.isLineFull(this.gameMap[i])) {
-        console.log(`${i}번째 줄이 채워졌네요!`);
-        this.pullNextLine(i);
-        this.gamePoint++;
-        i--;
-      }
-    }
-  }
-
-  /**
-   * @deprecated 테스트용 메서드
-   */
-  print() {
-    const activeMinoPivot = this.activeMino.pivot;
-    const activeMinoArea = this.activeMino.area;
-    const pivotY = activeMinoPivot.yPos;
-    const pivotX = activeMinoPivot.xPos;
-
-    const fakeMap = create2DArray<STATUS>(MAP_HEIGHT, MAP_WIDTH, STATUS.VOID);
-    for (let i = 0; i < MAP_HEIGHT; i++) {
-      for (let j = 0; j < MAP_WIDTH; j++) {
-        fakeMap[i][j] = this.gameMap[i][j];
       }
     }
 
-    for (let i = pivotY; i < pivotY + MINO_HEIGHT; i++) {
-      for (let j = pivotX; j < pivotX + MINO_WIDTH; j++) {
-        if (!fakeMap[i]) {
-          continue;
-        }
-
-        if (fakeMap[i][j]) continue;
-        if (j >= MAP_WIDTH) continue;
-
-        fakeMap[i][j] = activeMinoArea[i - pivotY][j - pivotX];
-      }
-    }
-
-    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
-    console.log(this.activeMino);
-    for (let i = 0; i < MAP_HEIGHT; i++) {
-      for (let j = 0; j < MAP_WIDTH; j++) {
-        process.stdout.write(String(fakeMap[i][j]) + ' ');
-      }
-      if (i === 3) {
-        process.stdout.write(' <- 이 선 포함 이 위는 보이지 않습니다.');
-      }
-      console.log();
-    }
+    return copiedGameMap;
   }
 }
 
