@@ -1,13 +1,18 @@
-import io, { Socket } from 'socket.io';
+import { Socket } from 'socket.io';
+import Mino from '@/service/minos/mino';
 
-export function sendMessageToUser(client: Socket, message: string) {
-  client.emit('message', message);
+export function sendMessageToClient(
+  client: Socket,
+  messageType: string,
+  entity: string
+) {
+  client.emit(messageType, entity);
 }
 
-export function sendGameMapToUser(
-  serverSocket: io.Server,
-  userName: string,
-  map: number[][]
-) {
-  serverSocket.to(userName).emit('gameMap', map);
+export function sendGameMapToClient(client: Socket, gameMap: number[][]) {
+  client.emit('game:tick-grid', gameMap);
+}
+
+export function sendPreviewMinosToClient(client: Socket, previewMinos: Mino[]) {
+  client.emit('game:tick-previews', previewMinos);
 }
