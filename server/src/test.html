@@ -4,7 +4,8 @@
     <title>Socket.IO chat</title>
   </head>
   <body>
-    <button id="hello button" onclick="helloFunction()">connected?</button>
+    <button onclick="joinPvP()">pvp 방 입장</button>
+    <button onclick="start()">게임시작</button>
   </body>
   <script src="https://cdn.socket.io/3.1.1/socket.io.min.js"></script>
   <script>
@@ -16,20 +17,31 @@
       console.log('서버와 연결되었습니다.');
     });
 
-    socket.on('hello', () => console.log('서버 측이 hello를 받았습니다.'));
     socket.on('message', (data) => {
       console.log(`메세지를 수신 받았습니다. : ${data}`);
     });
 
-    socket.on('gameMap', (map) => {
-      console.log('game 맵을 출력합니다.');
+    socket.on('game:tick-grid', (map) => {
+      let mapString = '';
+
       for (let i = 0; i < map.length; i++) {
-        console.log(map[i]);
+        mapString += map[i].join(' ');
+        mapString += '\n';
       }
+
+      console.clear();
+      console.log(mapString);
     });
 
+    function joinPvP() {
+      socket.emit('join:pvp');
+    }
+
+    function start() {
+      socket.emit('room:start');
+    }
+
     document.addEventListener('keydown', (keyboardEvent) => {
-      console.log(keyboardEvent.key);
       if (keyboardEvent.key === 'ArrowDown') {
         socket.emit('pressDownKey');
       }
@@ -42,29 +54,14 @@
       if (keyboardEvent.key === 'ArrowRight') {
         socket.emit('pressRightKey');
       }
-      if (keyboardEvent.key === 'Escape') {
-        socket.emit('pressEscapeKey');
-      }
-      if (keyboardEvent.key === 'j') {
-        socket.emit('joinPvP', 'join');
-      }
       if (keyboardEvent.key === 'l') {
         socket.emit('quit', 'leave');
-      }
-      if (keyboardEvent.key === 'Escape') {
-        socket.emit('pressEscapeKey');
       }
       if (keyboardEvent.key === 'z') {
         socket.emit('pressLeftRotateKey');
       }
       if (keyboardEvent.key === 'x') {
         socket.emit('pressRightRotateKey');
-      }
-      if (keyboardEvent.key === 't') {
-        socket.emit('test', 't');
-      }
-      if (keyboardEvent.key === 's') {
-        socket.emit('start', 't');
       }
     });
   </script>
