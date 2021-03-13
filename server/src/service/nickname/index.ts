@@ -1,7 +1,7 @@
 import { Service, Inject } from 'typedi';
 import RedisClient from '@/databases/redis';
-import adjectives from '@/service/nickname/adjective';
-import nouns from '@/service/nickname/noun';
+import { adjectives } from '@/service/nickname/vocas/adjectives';
+import { nouns } from '@/service/nickname/vocas/nouns';
 import { removeDuplicateFromArray, createRandomNumber } from '@/utils';
 
 @Service()
