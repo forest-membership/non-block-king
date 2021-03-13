@@ -1,7 +1,7 @@
 import { Socket } from 'socket.io';
 import * as MessageManager from '@/sockets/messageManager';
 import GameService from '@/service/game';
-import TetrisGame from '@/service/map';
+import TetrisGame from '@/service/game/simulator';
 import { KeyMap } from '@/types/key';
 
 function gameLoopFactory(socket: Socket) {

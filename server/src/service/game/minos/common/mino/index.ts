@@ -1,5 +1,5 @@
-import Block from '@/service/minos/block';
-import STATUS from '@/service/constants';
+import Block from '@/service/game/minos/common/block';
+import STATUS from '@/service/game/constants';
 import { create2DArray } from '@/utils/index';
 
 const TETRA = 4;

@@ -1,6 +1,6 @@
-import getNextMinos from '@/service/minos';
-import STATUS from '@/service/constants';
-import Mino from '@/service/minos/mino';
+import getNextMinos from '@/service/game/minos';
+import STATUS from '@/service/game/constants';
+import Mino from '@/service/game/minos/common/mino';
 import { create1DArray, create2DArray, copy2DArray } from '@/utils';
 
 const MINO_HEIGHT = 4;

@@ -1,7 +1,7 @@
 import { Socket } from 'socket.io';
 import { SocketId } from 'socket.io-adapter';
 import * as MessageManager from '@/sockets/messageManager';
-import TetrisGame from '@/service/map';
+import TetrisGame from '@/service/game/simulator';
 
 type moveType = 'UP' | 'DOWN' | 'LEFT' | 'RIGHT';
 type rotateType = 'CLOCK' | 'COUNTER_CLOCK_WISE';

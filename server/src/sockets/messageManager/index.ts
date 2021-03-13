@@ -1,5 +1,5 @@
 import { Socket } from 'socket.io';
-import Mino from '@/service/minos/mino';
+import Mino from '@/service/game/minos/common/mino';
 
 export function sendMessageToClient(
   client: Socket,
