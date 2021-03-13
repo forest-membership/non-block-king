@@ -30,7 +30,7 @@ class TetrisGame {
   }
 
   public get previewMinos() {
-    return this.activeMinoSet.slice(3);
+    return this.activeMinoSet.slice(0, PREVIEW_COUNT);
   }
 
   public get score() {
