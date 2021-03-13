@@ -1,24 +1,17 @@
 import getNextMinos from '@/service/game/minos';
-import STATUS from '@/service/game/constants';
 import Mino from '@/service/game/minos/common/mino';
 import { create1DArray, create2DArray, copy2DArray } from '@/utils';
-
-const MINO_HEIGHT = 4;
-const MINO_WIDTH = 4;
-
-const MAP_WIDTH = 10;
-const MAP_HEIGHT = 20 + MINO_HEIGHT;
+import STATUS from '@/service/game/constants';
+import {
+  MINO_HEIGHT,
+  MINO_WIDTH,
+  MAP_HEIGHT,
+  MAP_WIDTH,
+  OFFSET,
+} from './constants';
 
 type ArrowType = 'NONE' | 'UP' | 'DOWN' | 'LEFT' | 'RIGHT';
 type RotateType = 'CLOCK' | 'COUNTER_CLOCK_WISE';
-
-const OFFSET = {
-  NONE: { dy: 0, dx: 0 },
-  UP: { dy: -1, dx: 0 },
-  DOWN: { dy: 1, dx: 0 },
-  LEFT: { dy: 0, dx: -1 },
-  RIGHT: { dy: 0, dx: 1 },
-};
 
 function isMovable(
   direction: ArrowType,

@@ -1,12 +1,12 @@
 import Mino from '@/service/game/minos/common/mino';
-import Position from '@/types/position';
+import { IPosition } from '@/service/game/minos/common/types';
 import STATUS from '@/service/game/constants';
 
 class ZMino extends Mino {
   color: string;
   name: string;
 
-  constructor(initValue: Position = { xPos: 0, yPos: 0 }) {
+  constructor(initValue: IPosition = { xPos: 0, yPos: 0 }) {
     super();
     this.color = 'purple';
     this.name = 'Z';

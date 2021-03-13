@@ -1,4 +1,4 @@
-import Position from '@/types/position';
+import { IPosition } from '@/service/game/minos/common/types';
 
 class Block {
   xPos: number;
@@ -9,7 +9,7 @@ class Block {
     this.yPos = yPos || 0;
   }
 
-  setPosition({ xPos, yPos }: Position) {
+  setPosition({ xPos, yPos }: IPosition) {
     this.xPos = xPos;
     this.yPos = yPos;
   }

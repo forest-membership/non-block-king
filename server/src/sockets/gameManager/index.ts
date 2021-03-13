@@ -2,7 +2,15 @@ import { Socket } from 'socket.io';
 import * as MessageManager from '@/sockets/messageManager';
 import GameService from '@/service/game';
 import TetrisGame from '@/service/game/simulator';
-import { KeyMap } from '@/types/key';
+
+enum KeyMap {
+  'UP',
+  'DOWN',
+  'LEFT',
+  'RIGHT',
+  'CLOCK',
+  'COUNTER_CLOCK_WISE',
+}
 
 function gameLoopFactory(socket: Socket) {
   return function gameLoop(game: TetrisGame) {

@@ -32,7 +32,6 @@ class App {
       console.log(`App listening on the port ${this.port}`);
     });
 
-    // FIXME: 클라이언트가 홈페이지에 접속하면 소켓 초기화 하는 것으로 변경
     initSocket(this.server);
   }
 }
