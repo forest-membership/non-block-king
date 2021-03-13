@@ -2,50 +2,9 @@ import getNextMinos from '@/service/game/minos';
 import Mino from '@/service/game/minos/common/mino';
 import { create1DArray, create2DArray, copy2DArray } from '@/utils';
 import STATUS from '@/service/game/constants';
-import {
-  MINO_HEIGHT,
-  MINO_WIDTH,
-  MAP_HEIGHT,
-  MAP_WIDTH,
-  OFFSET,
-} from './constants';
-
-type ArrowType = 'NONE' | 'UP' | 'DOWN' | 'LEFT' | 'RIGHT';
-type RotateType = 'CLOCK' | 'COUNTER_CLOCK_WISE';
-
-function isMovable(
-  direction: ArrowType,
-  gameMap: number[][],
-  targetMino: Mino
-) {
-  const { dy, dx } = OFFSET[direction];
-  const { pivot: activeMinoPivot, area: activeMinoArea } = targetMino;
-  const pivotY = activeMinoPivot.yPos + dy;
-  const pivotX = activeMinoPivot.xPos + dx;
-
-  for (let y = pivotY; y < pivotY + MINO_HEIGHT; y++) {
-    for (let x = pivotX; x < pivotX + MINO_WIDTH; x++) {
-      const isTarget = activeMinoArea[y - pivotY][x - pivotX];
-
-      if (isTarget) {
-        if (MAP_HEIGHT <= y || MAP_WIDTH <= x || y < 0 || x < 0) {
-          return false;
-        }
-
-        const activeBlockOfMap = gameMap[y][x];
-        if (activeBlockOfMap) {
-          return false;
-        }
-      }
-    }
-  }
-
-  return true;
-}
-
-function isRotatable(gameMap: number[][], targetMino: Mino) {
-  return isMovable('NONE', gameMap, targetMino);
-}
+import { MINO_HEIGHT, MINO_WIDTH, MAP_HEIGHT, MAP_WIDTH } from './constants';
+import { ArrowType, RotateType } from './types';
+import { isMovable, isRotatable } from './helper';
 
 class TetrisGame {
   private gameMap: number[][];
